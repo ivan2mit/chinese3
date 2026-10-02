@@ -522,6 +522,11 @@ polygon.pz.peek{stroke:#A1432C;fill:rgba(161,67,44,.14)}
 .sndcard .snd-t b{display:block;font-size:15px}
 .sndcard .snd-t span{font-size:13px;color:var(--muted)}
 .audnote{font-size:12px;line-height:1.45;color:var(--muted);margin:6px 0 0}
+/* картинки, загруженные педагогом (адрес вместо встроенной пиктограммы) */
+.pic img,.qimg img,.mpic img{width:100%;height:100%;display:block;object-fit:cover}
+img.pscene{object-fit:fill}
+/* режим предпросмотра во фрейме кабинета педагога */
+html.pv .switch,html.pv .tune{display:none}
 /* hz:css:begin */
 /* Плеер заданий по иероглифам. Оформление — токены олимпиады (theme.css):
    плеер читает переменные хоста (--surface, --line, --gold…), а если их нет,
@@ -861,7 +866,7 @@ $('#filters').addEventListener('click', e => {
 });
 
 /* --- 3. окно теста --- */
-const pic = id => `<svg viewBox="0 0 120 90"><use href="#${id}"/></svg>`;
+const pic = id => /^(data:|blob:|https?:|\.{0,2}\/)/.test(id) ? `<img src="${id}" alt="" draggable="false">` : `<svg viewBox="0 0 120 90"><use href="#${id}"/></svg>`;
 const SCENE_ROOM = `<svg class="pscene" viewBox="0 0 600 380" preserveAspectRatio="none" aria-hidden="true"><rect width="600" height="380" fill="#F1EBDA"/><rect y="262" width="600" height="118" fill="#E3D3AE"/>
 <rect x="60" y="40" width="130" height="110" rx="4" fill="#BCD3E4" stroke="#436986" stroke-width="7"/><path d="M125 40v110M60 95h130" stroke="#436986" stroke-width="5"/>
 <rect x="440" y="50" width="110" height="215" rx="4" fill="#8A5A3C"/><g fill="#6E4630"><rect x="448" y="58" width="94" height="60"/><rect x="448" y="126" width="94" height="60"/><rect x="448" y="194" width="94" height="63"/></g>
@@ -925,14 +930,19 @@ const Q = [
 ];
 const HZ_FIRST = Q.length;
 HZQ.questions.forEach(q => Q.push({type:q.type, prompt:q.prompt, hz:q}));
-const S = {i:HZ_FIRST, hz:[], ans:Q.map(()=>new Set()), flag:Q.map(()=>false), match:Q.map(()=>({})), pick:null, es:Q.map(() => ({text:'', files:[], err:''})), gp:Q.map(() => ({vals:{}, gm:null})), pl:Q.map(() => ({pos:{}, pm:null})), ord:Q.map(q => ({list:q.items ? q.items.map((_,i)=>i) : [], line:[], pool:q.items ? q.items.map((_,i)=>i) : [], touched:false})), cfg:Q.map(q => ({
-  type:q.type, cols:q.cols, qmode:q.qImg&&q.zh?'both':q.qImg?'image':'text',
-  amode:q.amode || 'text', cap:q.cap || 'below', ratio:'4/3', mv:'lines', pm:q.pm || 'snap', pi:q.pi || 'drag', peek:'off', gm:q.gm || 'input', em:q.em || 'both', lim:q.lim || '500'}))};
-S.ans[2] = new Set([0,2]); S.ans[3] = new Set(); S.ans[1] = new Set([0]); S.ans[0] = new Set([1]);
-Q.forEach((q,i) => { if(q.ov) S.cfg[i].ov = q.ov; S.cfg[i].plays = q.plays || '2'; S.cfg[i].pause = 'no'; S.cfg[i].rd = q.rd || '60'; S.cfg[i].rt = q.rt || '3'; S.cfg[i].rl = 'yes'; });
-S.rc = Q.map(() => ({url:null, dur:0, takes:0, err:''}));
+const S = {i:HZ_FIRST, hz:[], pick:null};
+/* состояние ответов и оформления строится из Q; в режиме предпросмотра вызывается заново для присланных заданий */
+function resetState(){
+  Object.assign(S, {hz:[], pick:null, ans:Q.map(()=>new Set()), flag:Q.map(()=>false), match:Q.map(()=>({})), es:Q.map(() => ({text:'', files:[], err:''})), gp:Q.map(() => ({vals:{}, gm:null})), pl:Q.map(() => ({pos:{}, pm:null})), ord:Q.map(q => ({list:q.items ? q.items.map((_,i)=>i) : [], line:[], pool:q.items ? q.items.map((_,i)=>i) : [], touched:false})), cfg:Q.map(q => ({
+    type:q.type, cols:q.cols, qmode:q.qImg&&q.zh?'both':q.qImg?'image':'text',
+    amode:q.amode || 'text', cap:q.cap || 'below', ratio:'4/3', mv:'lines', pm:q.pm || 'snap', pi:q.pi || 'drag', peek:'off', gm:q.gm || 'input', em:q.em || 'both', lim:q.lim || '500'}))});
+  Q.forEach((q,i) => { if(q.ov) S.cfg[i].ov = q.ov; S.cfg[i].plays = q.plays || '2'; S.cfg[i].pause = 'no'; S.cfg[i].rd = q.rd || '60'; S.cfg[i].rt = q.rt || '3'; S.cfg[i].rl = 'yes'; });
+  S.rc = Q.map(() => ({url:null, dur:0, takes:0, err:''}));
+  Q.forEach((q,i)=>{ if(q.a && q.a[0] && q.a[0].img && q.a[0].t) S.cfg[i].amode='both'; });
+}
+resetState();
+S.ans[2] = new Set([0,2]); S.ans[1] = new Set([0]); S.ans[0] = new Set([1]);
 S.match[6] = {0:1, 1:3}; S.ans[6] = new Set([0,1]);
-Q.forEach((q,i)=>{ if(q.a && q.a[0].img && q.a[0].t) S.cfg[i].amode='both'; });
 const hasZh = s => /[一-鿿]/.test(s);
 const CHECK = '<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
 
@@ -1665,7 +1675,7 @@ function renderEssay(q, c){
   const E = S.es[S.i], text = c.em !== 'image', img = c.em !== 'text';
   if(!text && E.text){ /* текст сохраняется, но не показывается */ }
   syncEssay();
-  const stem = (q.qImg || q.zh) ? `<div class="stem">${q.qImg ? `<div class="qimg">${q.qImg}</div>` : ''}${q.zh ? `<div><div class="zhbig">${q.zh}</div><div class="py">${q.py}</div></div>` : ''}</div>` : '';
+  const stem = (q.qImg || q.zh) ? `<div class="stem">${q.qImg ? `<div class="qimg">${q.qImg[0] === '<' ? q.qImg : pic(q.qImg)}</div>` : ''}${q.zh ? `<div><div class="zhbig">${q.zh}</div><div class="py">${q.py}</div></div>` : ''}</div>` : '';
   const req = q.req ? `<div class="es-req"><span class="lbl">Используйте</span>${q.req.map(w => `<span class="rw">${w}</span>`).join('')}</div>` : '';
   const area = text ? `<div class="es-box"><textarea id="esText" maxlength="${+c.lim}" placeholder="Начните писать ответ здесь…" aria-label="Ответ">${esc(E.text)}</textarea>
     <div class="es-bar"><span>${img ? 'Картинку можно перетащить в поле или вставить из буфера обмена.' : 'Ответ сохраняется автоматически.'}</span><span class="es-count" id="esCount"></span></div></div>` : '';
@@ -1718,7 +1728,7 @@ $('#qBody').addEventListener('paste', e => {
 /* ---------- звуковые дорожки ---------- */
 const AU = {run:null, used:{}, tm:null};
 const aKey = (i,k) => `${i}:${k}`;
-const fmtT = t => `0:${String(Math.floor(t)).padStart(2,'0')}`;
+const fmtT = t => `${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;
 const IC_PLAY = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 2.5v11l9.5-5.5z"/></svg>';
 const IC_PAUSE = '<svg viewBox="0 0 16 16" fill="currentColor"><path d="M3.5 2.5h3v11h-3zM9.5 2.5h3v11h-3z"/></svg>';
 const IC_DONE = CHECK, IC_EQ = '<span class="eq"><i></i><i></i><i></i></span>';
@@ -2003,6 +2013,49 @@ addEventListener('resize', () => {
   fit(); layoutMatch(); paintAud(); navFocus();
 });
 document.fonts && document.fonts.ready.then(() => { fit(); layoutMatch(); });
-render();
-go('auth');
+
+/* ---------- режим предпросмотра: эту же страницу кабинет педагога (teacher.html) открывает во фрейме ----------
+   Педагог присылает задания (oly:set) и нажатия в «Оформлении задания» (oly:cfg); страница отвечает своим состоянием (oly:state).
+   Отдельной копии окна участника у педагога нет: он видит этот файл. */
+const PV = parent !== window && /preview/.test(location.hash);
+let pvRev;
+function pvState(){
+  const b = $('#qBody');
+  parent.postMessage({type:'oly:state', rev:pvRev, i:S.i, cfg:S.cfg[S.i], tune:$('#tune').innerHTML,
+    fits:b.scrollHeight <= b.clientHeight + 1, narrow:matchMedia('(max-width:960px)').matches}, '*');
+}
+function pvLoad(m){
+  if(REC) recStop(false);
+  rpStop(); AU.run = null; clearInterval(AU.tm); AU.tm = null; AU.used = {};
+  pvRev = m.rev;
+  Q.length = 0;
+  m.questions.forEach(q => Q.push(q.type.startsWith('hz-') ? {type:q.type, prompt:HZQ.questions[q.hzRef].prompt, hz:HZQ.questions[q.hzRef], cfg:q.cfg} : q));
+  resetState();
+  Q.forEach((q,i) => {
+    const c = Object.assign(S.cfg[i], q.cfg || {}), ok = allowed(q);
+    if(!q.a) return;
+    if(!ok.am.includes(c.amode)) c.amode = ok.am[0];
+    c.qmode = ok.qm.length ? (ok.qm.includes(c.qmode) ? c.qmode : 'both') : q.qImg && !q.zh ? 'image' : 'text';
+  });
+  S.i = Math.min(m.i || 0, Q.length - 1);
+  if(m.title) $('.s-title b').textContent = m.title;
+  if(m.sub) $('.s-title small').textContent = m.sub;
+  render();
+}
+if(PV){
+  document.documentElement.classList.add('pv');
+  const go0 = go; go = () => go0('test');
+  const render1 = render; let pvT = 0;
+  render = function(){ render1(); clearTimeout(pvT); pvT = setTimeout(pvState, 40); };
+  addEventListener('resize', () => { clearTimeout(pvT); pvT = setTimeout(pvState, 80); });
+  addEventListener('message', e => {
+    const m = e.data; if(e.source !== parent || !m) return;
+    if(m.type === 'oly:set') pvLoad(m);
+    else if(m.type === 'oly:cfg'){ const b = $(`#tune .seg[data-key="${m.key}"] button[data-v="${m.v}"]`); b && b.click(); }
+    else if(m.type === 'oly:theme') document.documentElement.dataset.theme = m.theme;
+  });
+  render(); go('test');
+  parent.postMessage({type:'oly:ready', sprite:$('body > svg').outerHTML, scenes:{room:SCENE_ROOM, shop:SCENE_SHOP},
+    hz:HZQ.questions.map((q,i) => ({ref:i, type:q.type, prompt:q.prompt}))}, '*');
+} else { render(); go('auth'); }
 </script>

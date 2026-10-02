@@ -2018,14 +2018,16 @@ document.fonts && document.fonts.ready.then(() => { fit(); layoutMatch(); });
    Педагог присылает задания (oly:set) и нажатия в «Оформлении задания» (oly:cfg); страница отвечает своим состоянием (oly:state).
    Отдельной копии окна участника у педагога нет: он видит этот файл. */
 const PV = parent !== window && /preview/.test(location.hash);
+let pvRev;
 function pvState(){
   const b = $('#qBody');
-  parent.postMessage({type:'oly:state', i:S.i, cfg:S.cfg[S.i], tune:$('#tune').innerHTML,
+  parent.postMessage({type:'oly:state', rev:pvRev, i:S.i, cfg:S.cfg[S.i], tune:$('#tune').innerHTML,
     fits:b.scrollHeight <= b.clientHeight + 1, narrow:matchMedia('(max-width:960px)').matches}, '*');
 }
 function pvLoad(m){
   if(REC) recStop(false);
   rpStop(); AU.run = null; clearInterval(AU.tm); AU.tm = null; AU.used = {};
+  pvRev = m.rev;
   Q.length = 0;
   m.questions.forEach(q => Q.push(q.type.startsWith('hz-') ? {type:q.type, prompt:HZQ.questions[q.hzRef].prompt, hz:HZQ.questions[q.hzRef], cfg:q.cfg} : q));
   resetState();

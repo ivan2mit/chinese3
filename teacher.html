@@ -1,0 +1,912 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Кабинет педагога олимпиады</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap">
+<style>
+/* Сторона педагога. Палитра и токены те же, что в olympiad.html; окно участника не копируется, а открывается во фрейме (см. «предпросмотр»). */
+:root{
+  --bg:#FBF8F1; --surface:#FFFFFF; --sand:#F1EBDA; --ink:#141B4A; --muted:#5E6384; --line:#E2D9C4;
+  --gold:#E6A046; --gold-ink:#8A4F0E; --gold-tint:#FBEBD0; --btn-ink:#1B2455;
+  --solid:#1B2455; --on-solid:#F6F0DF; --panel:#1B2455; --on-panel:#F6F0DF;
+  --red:#A1432C; --green:#46806A; --slate:#436986; --mark:#1B2455; --imgbg:#F1EBDA;
+  --shadow:0 1px 2px rgba(20,27,74,.06),0 8px 24px rgba(20,27,74,.06);
+  --m0:#E6A046; --m1:#C25A3E; --m2:#46806A; --m3:#5B86A8; --m4:#8A6BB0;
+  --font-ui:'Montserrat','Segoe UI',system-ui,sans-serif;
+  --font-zh:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0C1131; --surface:#151C47; --sand:#1D2554; --ink:#F4EFE0; --muted:#A7ADCB; --line:#2B3569;
+  --gold-ink:#F0B766; --gold-tint:rgba(230,160,70,.15); --solid:#E6A046; --on-solid:#1B2455;
+  --panel:#080C26; --mark:#F4EFE0; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0C1131; --surface:#151C47; --sand:#1D2554; --ink:#F4EFE0; --muted:#A7ADCB; --line:#2B3569;
+  --gold-ink:#F0B766; --gold-tint:rgba(230,160,70,.15); --solid:#E6A046; --on-solid:#1B2455;
+  --panel:#080C26; --mark:#F4EFE0; --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 15px/1.5 var(--font-ui)}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{text-wrap:balance}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.zh{font-family:var(--font-zh)}
+.wrap{width:100%;max-width:1200px;margin-inline:auto;padding-inline:16px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink)}
+.muted{color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 18px;border-radius:12px;border:2px solid transparent;font-weight:700;font-size:14px;background:transparent;white-space:nowrap;text-decoration:none}
+.btn-primary{background:var(--gold);color:var(--btn-ink)}
+.btn-primary:hover{filter:brightness(1.06)}
+.btn-line{border-color:var(--line);background:var(--surface)}
+.btn-line:hover{border-color:var(--ink)}
+.btn-quiet{color:var(--muted);padding:0 10px}
+.btn-quiet:hover{color:var(--ink)}
+.btn.sm{min-height:34px;padding:0 12px;font-size:13px;border-radius:10px}
+.btn.danger:hover{border-color:var(--red);color:var(--red)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.logo{display:flex;align-items:center;gap:12px;color:var(--mark);text-decoration:none}
+.logo svg{width:36px;height:36px;flex:none}
+.logo b{display:block;font-size:12px;font-weight:800;letter-spacing:.04em;line-height:1.2;text-transform:uppercase}
+.logo span{display:block;font-size:10px;font-weight:500;letter-spacing:.03em;line-height:1.3;text-transform:uppercase;opacity:.85}
+.input,.in{border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);padding:0 12px;font-weight:600;font-size:14px;min-height:40px;width:100%;min-width:0}
+.input{height:52px;border-radius:12px;font-size:16px;padding:0 16px}
+textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
+.in.zh{font-family:var(--font-ui),var(--font-zh);font-size:15px}
+.in::placeholder,.input::placeholder{color:var(--muted);font-weight:500}
+.in:focus,.input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-tint)}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;background:var(--sand);color:var(--muted)}
+.pill.ok{background:rgba(70,128,106,.16);color:var(--green)}
+.pill.draft{background:var(--gold-tint);color:var(--gold-ink)}
+.pill.type{background:var(--sand);color:var(--ink)}
+.chip{min-height:34px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:13px}
+.chip[aria-pressed="true"]{background:var(--solid);color:var(--on-solid);border-color:var(--solid)}
+
+/* ---------- вход ---------- */
+.auth{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);min-height:100vh;min-height:100dvh}
+.auth-art{position:relative;background:var(--panel);color:var(--on-panel);padding:40px clamp(24px,5vw,64px) 0;display:flex;flex-direction:column;gap:36px;overflow:hidden}
+.auth-art .logo{color:var(--on-panel)}
+.auth-art h1{font-size:clamp(30px,3.6vw,48px);line-height:1.1;font-weight:800;letter-spacing:-.01em;max-width:13ch}
+.auth-art p{max-width:40ch;opacity:.85}
+.zh-mark{font-family:var(--font-zh);font-weight:700;color:var(--gold);font-size:15px;letter-spacing:.3em}
+.band{margin-top:auto;height:210px;margin-inline:calc(-1 * clamp(24px,5vw,64px))}
+.band svg{display:block;width:100%;height:100%}
+.auth-form{display:grid;place-items:center;padding:40px 16px}
+.auth-card{width:100%;max-width:400px;display:flex;flex-direction:column;gap:20px}
+.auth-card h2{font-size:28px;font-weight:800;line-height:1.15}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label,.field>.lab{font-size:13px;font-weight:600}
+.pw{position:relative}
+.pw .input{padding-right:92px}
+.pw button{position:absolute;right:6px;top:6px;height:40px;padding:0 12px;border:0;background:transparent;font-size:13px;font-weight:600;color:var(--gold-ink)}
+
+/* ---------- каркас кабинета ---------- */
+.topbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar .bar{display:flex;align-items:center;gap:20px;min-height:60px;padding-inline:16px}
+.tabs{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto}
+.tab{min-height:38px;padding:0 14px;border-radius:10px;border:0;background:transparent;font-weight:700;font-size:14px;color:var(--muted);white-space:nowrap}
+.tab:hover:not([disabled]){color:var(--ink)}
+.tab[aria-current="true"]{background:var(--sand);color:var(--ink)}
+.tab[disabled]{opacity:.4;cursor:not-allowed}
+.crs{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--gold-tint);color:var(--gold-ink);white-space:nowrap}
+.who{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;white-space:nowrap}
+.ava{width:36px;height:36px;border-radius:50%;background:var(--slate);color:#fff;display:grid;place-items:center;font-weight:700;font-size:12px;flex:none}
+.page{padding-block:32px 64px}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+.head h1{font-size:clamp(24px,3vw,34px);font-weight:800;line-height:1.1;margin-top:6px}
+.head p{color:var(--muted);max-width:64ch;margin-top:6px}
+.empty{border:2px dashed var(--line);border-radius:18px;padding:40px 20px;text-align:center;color:var(--muted)}
+.empty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+
+/* ---------- курсы ---------- */
+.courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:20px}
+.ccard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:16px;box-shadow:var(--shadow);min-width:0;text-align:left}
+.ccard.new{box-shadow:none;background:transparent;border:2px dashed var(--line);align-items:center;justify-content:center;color:var(--muted);font-weight:700;min-height:220px}
+.ccard.new:hover{border-color:var(--gold);color:var(--gold-ink)}
+.ccard h3{font-size:19px;font-weight:700;line-height:1.2}
+.ccard .sub{font-size:13px;color:var(--muted);margin-top:4px}
+.c-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.dia{width:68px;height:68px;flex:none;position:relative}
+.dia svg{position:absolute;inset:0;width:100%;height:100%}
+.dia span{position:absolute;inset:0;display:grid;place-items:center;font:700 20px var(--font-zh);color:#fff;white-space:nowrap}
+.meta{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.meta b{font-weight:800}
+.ccard .btn{margin-top:auto}
+
+/* ---------- банк заданий ---------- */
+.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.tools .in{max-width:320px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.qlist{display:flex;flex-direction:column;gap:8px}
+.qrow{display:grid;grid-template-columns:34px 178px minmax(0,1fr) 64px 104px auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px 10px 14px}
+.qrow:hover{border-color:var(--muted)}
+.qrow .n{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.qmain{min-width:0;text-align:left;border:0;background:transparent;padding:0}
+.qmain b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qmain span{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--font-ui),var(--font-zh)}
+.qrow .pts{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qacts{display:flex;gap:4px}
+.warn-dot{color:var(--red);font-weight:700}
+
+/* ---------- тикеты ---------- */
+.tgrid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:20px;align-items:start}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card>h3{font-size:16px;font-weight:800}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ttable{width:100%;border-collapse:collapse;font-size:14px}
+.ttable th{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);white-space:nowrap}
+.ttable td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.ttable .mono{font:600 14px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
+.tscroll{overflow-x:auto}
+.cards{display:none}
+
+/* ---------- редактор ---------- */
+.ed{display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,45%);height:calc(100vh - 61px);height:calc(100dvh - 61px)}
+.ed-left{overflow:auto;min-width:0}
+.ed-head{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ed-head h2{font-size:17px;font-weight:800;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.saved{font-size:12px;color:var(--muted);font-weight:600;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.saved::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+.saved.saving::before{background:var(--gold)}
+.saved.err{color:var(--red)}.saved.err::before{background:var(--red)}
+.ed-form{padding:16px;display:flex;flex-direction:column;gap:14px;max-width:820px}
+.issues{border:1px solid var(--red);border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;color:var(--red);background:color-mix(in srgb,var(--red) 7%,var(--surface))}
+.issues ul{margin:0;padding-left:18px}
+.grid2{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:12px}
+.rows{display:flex;flex-direction:column;gap:8px}
+.rw{display:flex;align-items:center;gap:8px;min-width:0}
+.rw .num{flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--sand)}
+.rw .num.c{background:color-mix(in srgb,var(--c) 25%,var(--surface));border:2px solid var(--c)}
+.it{display:flex;gap:6px;flex:1;min-width:0;align-items:center}
+.it .in:first-of-type{flex:1.3}
+.it .in{flex:1}
+.it-img{flex:none;width:52px;height:40px;border-radius:8px;border:2px dashed var(--line);background:var(--imgbg);display:grid;place-items:center;overflow:hidden;padding:0;color:#5E6384}
+.it-img.on{border-style:solid;border-color:var(--gold)}
+.it-img svg,.it-img img{width:100%;height:100%;display:block;object-fit:cover}
+.it-img .ph{width:20px;height:20px}
+.it-img.big{width:120px;height:90px;position:relative}
+.it-img .pscene{position:absolute;inset:0}
+.x{flex:none;width:32px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);font-size:15px;line-height:1;padding:0}
+.x:hover:not([disabled]){border-color:var(--ink);color:var(--ink)}
+.x[disabled]{opacity:.3;cursor:not-allowed}
+.okc{flex:none;display:grid;place-items:center;width:32px;height:32px}
+.okc input{width:20px;height:20px;accent-color:var(--green);cursor:pointer}
+.aud{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:0 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:12px;font-weight:700;white-space:nowrap;max-width:190px}
+.aud.on{border-color:var(--gold);background:var(--gold-tint);color:var(--gold-ink)}
+.aud span{overflow:hidden;text-overflow:ellipsis}
+.arrow{flex:none;color:var(--muted);font-weight:700}
+.note{font-size:12px;color:var(--muted);line-height:1.45;margin:0}
+.gapl{display:flex;flex-direction:column;gap:8px}
+.gapl .tag{flex:none;min-width:90px;max-width:150px;padding:4px 10px;border-radius:8px;background:var(--gold-tint);color:var(--gold-ink);font:600 15px var(--font-ui),var(--font-zh);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* сцена: точки и зоны */
+.sc{position:relative;width:100%;border-radius:12px;overflow:hidden;border:2px solid var(--line);background:#F1EBDA;user-select:none;-webkit-user-select:none;touch-action:none}
+.sc .pscene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.sc-z{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.sc-z polygon{fill:rgba(230,160,70,.25);stroke:#1B2455;stroke-width:2;stroke-dasharray:6 4;vector-effect:non-scaling-stroke}
+.sc-pt,.sc-v,.sc-m,.sc-n{position:absolute;transform:translate(-50%,-50%);border-radius:50%;display:grid;place-items:center}
+.sc-pt{width:28px;height:28px;background:var(--c);border:3px solid #fff;box-shadow:0 0 0 2px #1B2455;color:#fff;font-size:12px;font-weight:800;cursor:grab}
+.sc-v{width:16px;height:16px;background:#fff;border:3px solid #1B2455;cursor:grab}
+.sc-m{width:12px;height:12px;background:#E6A046;border:2px solid #fff;opacity:.75;cursor:copy}
+.sc-n{width:24px;height:24px;background:#1B2455;color:#F6F0DF;font-size:12px;font-weight:800;pointer-events:none}
+/* блок «Оформление»: разметку присылает окно участника */
+.tune-host .grp{margin-bottom:12px}
+.tune-host .grp:last-child{margin-bottom:0}
+.tune-host .lab{font-size:12px;font-weight:700;margin-bottom:6px}
+.tune-host .note,.tune-host .mhint,.tune-host .audnote{font-size:12px;color:var(--muted);margin:6px 0 0;line-height:1.45}
+.seg{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface);max-width:460px}
+.seg button{flex:1;min-height:34px;border:0;border-right:1px solid var(--line);background:transparent;font-size:12px;font-weight:600;padding:0 8px;white-space:nowrap}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--solid);color:var(--on-solid)}
+.seg button[disabled]{opacity:.35;cursor:not-allowed}
+
+/* ---------- предпросмотр: фрейм с olympiad.html ---------- */
+.pv{display:flex;flex-direction:column;min-width:0;min-height:0;background:var(--sand);border-left:1px solid var(--line)}
+.pv.full{position:fixed;inset:0;z-index:40;border:0}
+.pv-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;background:var(--surface);border-bottom:1px solid var(--line)}
+.pv-bar b{font-size:13px;font-weight:800;flex:1;min-width:120px}
+.pv-bar .seg{flex:none}
+.pv-view{flex:1;min-height:0;display:grid;place-items:center;padding:14px;overflow:hidden}
+.pv-frame{position:relative;border-radius:12px;overflow:hidden;box-shadow:0 0 0 1px var(--line),var(--shadow);background:var(--bg);flex:none}
+.pv.phone .pv-frame{border-radius:26px;box-shadow:0 0 0 8px var(--solid),var(--shadow)}
+.pv-frame iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;display:block}
+.pv-foot{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:8px 12px;background:var(--surface);border-top:1px solid var(--line);font-size:12px;font-weight:600;color:var(--muted)}
+.fit{display:inline-flex;align-items:center;gap:6px;color:var(--green)}
+.fit::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.fit.bad{color:var(--red)}
+.pv-open{display:none}
+
+/* модалка */
+.backdrop{position:fixed;inset:0;z-index:60;background:rgba(10,14,45,.55);display:grid;place-items:center;padding:16px}
+.modal{background:var(--surface);border-radius:20px;max-width:560px;width:100%;max-height:calc(100dvh - 32px);overflow:auto;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:0 24px 64px rgba(0,0,0,.35)}
+.modal h3{font-size:21px;font-weight:800}
+.modal .row{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.types{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.types button{text-align:left;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface)}
+.types button:hover{border-color:var(--gold);background:var(--gold-tint)}
+.types b{display:block;font-size:14px}
+.types span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
+.pics{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.pics button{aspect-ratio:4/3;border-radius:10px;border:2px solid var(--line);background:var(--imgbg);padding:0;overflow:hidden;position:relative}
+.pics button:hover{border-color:var(--gold)}
+.pics svg{width:100%;height:100%;display:block}
+
+@media (max-width:1000px){
+  .ed{grid-template-columns:minmax(0,1fr)}
+  .pv:not(.full){display:none}
+  .pv-open{display:inline-flex}
+  .tgrid{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:760px){
+  .auth{grid-template-columns:minmax(0,1fr)}
+  .auth-art{padding-top:28px;gap:20px}.band{height:84px}.auth-art h1{max-width:none}
+  .qrow{grid-template-columns:28px minmax(0,1fr) auto;row-gap:6px}
+  .qrow .qmain{grid-column:2/-1;grid-row:2}
+  .qrow .pts{display:none}
+  .qrow .qacts{grid-column:1/-1;justify-content:flex-end}
+  .logo div,.who>div,.crs{display:none}
+  .grid2,.row2,.types{grid-template-columns:minmax(0,1fr)}
+  .it{flex-wrap:wrap}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media print{
+  body{background:#fff;color:#000}
+  #app,#s-auth,.backdrop{display:none!important}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .tk{border:1px dashed #888;padding:14px 16px;break-inside:avoid;font:500 12px/1.5 var(--font-ui)}
+  .tk h4{margin:0 0 6px;font-size:13px}
+  .tk dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:6px 0 0}
+  .tk dt{color:#555}.tk dd{margin:0;font:700 15px ui-monospace,Menlo,monospace}
+}
+</style>
+
+<div id="sprite"></div>
+
+<div id="s-auth" class="auth" hidden>
+  <aside class="auth-art">
+    <a class="logo" href="#" aria-label="Центр социальных компетенций">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2C26 11 34 21 38 36H28L20 21 12 36H2C6 21 14 11 20 2Z" fill="currentColor"/><circle cx="20" cy="19" r="3.4" fill="var(--panel)"/></svg>
+      <div><b>Центр социальных<br>компетенций</b><span>дополнительного образования «Сириус»</span></div>
+    </a>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="zh-mark">汉语 · 奥林匹克</div>
+      <h1>Олимпиада по китайскому языку</h1>
+      <p>Кабинет педагога: задания, оформление окна участника и доступы для участников.</p>
+    </div>
+    <div class="band" id="band"></div>
+  </aside>
+  <main class="auth-form">
+    <form class="auth-card" id="loginForm" novalidate>
+      <div class="eyebrow">Кабинет педагога</div>
+      <h2>Вход для педагогов</h2>
+      <div class="field"><label for="lg">Логин или e-mail</label><input class="input" id="lg" autocomplete="username" value="teacher@sirius.demo"></div>
+      <div class="field"><label for="pw">Пароль</label>
+        <div class="pw"><input class="input" id="pw" type="password" autocomplete="current-password" value="demo1234"><button type="button" id="pwToggle">Показать</button></div>
+      </div>
+      <button class="btn btn-primary" type="submit" style="min-height:52px;font-size:15px">Войти</button>
+      <p class="hint">Вход по учётной записи Moodle с ролью педагога. Участники входят на отдельной странице по логину и паролю из тикета.</p>
+    </form>
+  </main>
+</div>
+
+<div id="app" hidden>
+  <header class="topbar"><div class="bar">
+    <a class="logo" href="#/courses" aria-label="Центр социальных компетенций">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2C26 11 34 21 38 36H28L20 21 12 36H2C6 21 14 11 20 2Z" fill="currentColor"/><circle cx="20" cy="19" r="3.4" fill="var(--surface)"/></svg>
+      <div><b>Кабинет педагога</b><span>Олимпиада по китайскому языку</span></div>
+    </a>
+    <nav class="tabs" id="tabs" aria-label="Разделы">
+      <button class="tab" data-go="courses">Курсы</button>
+      <button class="tab" data-go="bank">Банк заданий</button>
+      <button class="tab" data-go="tickets">Тикеты участников</button>
+    </nav>
+    <span class="crs" id="crs" hidden></span>
+    <div class="who">
+      <button class="icon-btn" id="themeBtn" aria-label="Переключить тему"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+      <div>Анна Ван</div><span class="ava">АВ</span>
+      <button class="btn btn-quiet sm" id="logout">Выйти</button>
+    </div>
+  </div></header>
+
+  <main class="wrap page" id="s-courses" hidden></main>
+  <main class="wrap page" id="s-bank" hidden></main>
+  <main class="wrap page" id="s-tickets" hidden></main>
+
+  <main class="ed" id="s-edit" hidden>
+    <div class="ed-left">
+      <div class="ed-head">
+        <button class="btn btn-line sm" data-go="bank">← Банк</button>
+        <h2 id="edTitle"></h2>
+        <span class="saved" id="edSaved">Сохранено</span>
+        <div class="seg" id="edStatus" role="group" aria-label="Состояние задания"><button data-v="draft">Черновик</button><button data-v="ready">Готово</button></div>
+        <button class="btn btn-primary sm pv-open" id="pvOpen">Превью</button>
+      </div>
+      <div class="ed-form" id="edForm"></div>
+    </div>
+    <aside class="pv" id="pv" aria-label="Предпросмотр окна участника">
+      <div class="pv-bar">
+        <b>Так увидит участник</b>
+        <div class="seg" id="pvDev" role="group" aria-label="Устройство"><button data-v="desk" aria-pressed="true">Компьютер</button><button data-v="phone" aria-pressed="false">Телефон</button></div>
+        <button class="btn btn-line sm" id="pvTheme" title="Тема окна участника">Тема</button>
+        <button class="btn btn-line sm" id="pvReset" title="Сбросить ответы, данные в предпросмотре">Сбросить</button>
+        <button class="btn btn-line sm" id="pvFull">Развернуть</button>
+      </div>
+      <div class="pv-view" id="pvView"><div class="pv-frame" id="pvFrame"><iframe id="pvIframe" src="olympiad.html#preview" title="Окно участника" allow="microphone"></iframe></div></div>
+      <div class="pv-foot"><span class="fit" id="pvFit">Загрузка окна участника…</span><span id="pvSize"></span></div>
+    </aside>
+  </main>
+</div>
+
+<div class="cards" id="cards"></div>
+<div class="backdrop" id="backdrop" hidden><div class="modal" role="dialog" aria-modal="true" id="modal"></div></div>
+<input type="file" id="filePick" hidden>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const h = v => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+const uid = () => Math.random().toString(36).slice(2, 9);
+const PAL = ['#E6A046','#A1432C','#46806A','#436986','#1B2455'];
+const hasZh = s => /[一-鿿]/.test(s || '');
+
+/* --- брендовый паттерн (как в olympiad.html) --- */
+function pattern(el, H){
+  const r = 22, cols = 40, W = cols*2*r;
+  const star = s => `M0,${-s}Q0,0 ${s},0Q0,0 0,${s}Q0,0 ${-s},0Q0,0 0,${-s}Z`;
+  const k = r*.2, d = `M0,${-r}Q${k},${-k} ${r},0Q${k},${k} 0,${r}Q${-k},${k} ${-r},0Q${-k},${-k} 0,${-r}Z`;
+  let g = '';
+  for(let j=0;j<=Math.ceil(H/r)+1;j++) for(let i=0;i<=cols;i++){
+    const x = i*2*r + (j%2 ? r : 0), y = j*r, c = PAL[(i + 2*j) % 5];
+    g += `<g transform="translate(${x} ${y})"><path d="${d}" fill="${c}"/>` + ((i+j)%2 ? `<circle r="3.4" fill="#F1EBDA"/>` : `<path d="${star(9)}" fill="#F1EBDA"/>`) + `</g>`;
+  }
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${g}</svg>`;
+}
+pattern($('#band'), 210);
+
+/* ---------- типы заданий ---------- */
+const TYPES = {
+  single:{n:'Один ответ', d:'Один верный вариант из нескольких'},
+  multiple:{n:'Несколько ответов', d:'Два и более верных варианта'},
+  match:{n:'Сопоставление', d:'Пары: слово и перевод, слово и картинка'},
+  order:{n:'Порядок', d:'Расставить реплики, слова или картинки'},
+  place:{n:'Размещение на картинке', d:'Перенести слова на точки или в зоны картинки'},
+  gap:{n:'Пропуски', d:'Вписать текст или перенести плашку в пропуск'},
+  essay:{n:'Развёрнутый ответ', d:'Текст и/или картинки, проверяет эксперт'},
+  record:{n:'Запись голоса', d:'Устный ответ, проверяет эксперт'},
+  'hz-strokes':{n:'Недостающие черты', d:'Иероглифы', hz:1}, 'hz-keys':{n:'Недостающие ключи', d:'Иероглифы', hz:1}, 'hz-order':{n:'Порядок черт', d:'Иероглифы', hz:1}
+};
+const MANUAL = t => t === 'essay' || t === 'record';
+const GROUPS = [['all','Все'],['choice','Выбор ответа'],['match','Сопоставление'],['order','Порядок'],['place','Размещение'],['gap','Пропуски'],['manual','Ручная проверка'],['hz','Иероглифы']];
+const groupOf = t => t === 'single' || t === 'multiple' ? 'choice' : MANUAL(t) ? 'manual' : t.startsWith('hz-') ? 'hz' : t;
+
+const I = (t, s, img) => { const o = {}; if(t) o.t = t; if(s) o.s = s; if(img) o.img = img; return o; };
+const A = (ok, t, s, img, au) => Object.assign(I(t, s, img), {ok:!!ok}, au ? {au:{name:'Демо-запись', dur:au}} : {});
+const DEMO_AU = dur => ({name:'Демо-запись', dur});
+function blank(type){
+  const q = {id:uid(), type, prompt:'', points:MANUAL(type) ? 5 : 1, status:'draft', cfg:{}, mod:Date.now()};
+  if(type === 'single' || type === 'multiple') Object.assign(q, {zh:'', py:'', a:[A(1,''),A(0,''),A(0,''),A(0,'')], cfg:{cols:2}});
+  if(type === 'match') q.pairs = [{l:{}, r:{}},{l:{}, r:{}},{l:{}, r:{}}];
+  if(type === 'order') Object.assign(q, {items:[{},{},{}], hint:'', cfg:{ov:'list'}});
+  if(type === 'place') Object.assign(q, {scene:'room', poolTitle:'Слова', items:[{x:30,y:40,zn:0},{x:60,y:55,zn:0}], zones:[[[10,15],[45,15],[45,60],[10,60]]]});
+  if(type === 'gap') Object.assign(q, {text:'', gaps:[], extra:[], hint:''});
+  if(type === 'essay') Object.assign(q, {zh:'', py:'', req:'', criteria:''});
+  if(type === 'record') Object.assign(q, {zh:'', py:'', hint:'', criteria:''});
+  return q;
+}
+function seedQs(){
+  const P = [[20.8,63],[58,58],[57.5,46],[20.8,25],[82.5,42]];
+  const Z = [[[5,50],[42,50],[44,60],[44,80],[5,80]],[[47,56],[71,56],[71,80],[66,80],[66,70],[52,70],[52,80],[47,80]],[[53,36],[63,36],[63,48],[59,57],[56,57],[56,48],[53,48]],[[8,8],[33,8],[33,40],[8,40]],[[72,12],[94,12],[94,70],[72,70]]];
+  return [
+    {type:'single', prompt:'Выберите правильный перевод слова', zh:'谢谢', py:'xièxie', cfg:{cols:2}, a:[A(0,'Пожалуйста'),A(1,'Спасибо'),A(0,'Извините'),A(0,'До свидания')]},
+    {type:'single', prompt:'Вас спрашивают. Выберите подходящий ответ', zh:'请问，洗手间在哪儿？', py:'Qǐngwèn, xǐshǒujiān zài nǎr?', cfg:{cols:1}, a:[A(1,'在那边。','Zài nàbiān.'),A(0,'我很好。','Wǒ hěn hǎo.'),A(0,'不客气。','Bú kèqi.'),A(0,'我是老师。','Wǒ shì lǎoshī.')]},
+    {type:'multiple', prompt:'Выберите все изображения, которые относятся к фруктам', cfg:{cols:3, amode:'both', cap:'below'}, a:[A(1,'苹果','píngguǒ','p-apple'),A(0,'书','shū','p-book'),A(1,'香蕉','xiāngjiāo','p-banana'),A(0,'杯子','bēizi','p-cup'),A(1,'西瓜','xīguā','p-melon'),A(0,'时钟','shízhōng','p-clock')]},
+    {type:'single', prompt:'Посмотрите на картинку и ответьте на вопрос', zh:'现在几点？', py:'Xiànzài jǐ diǎn?', qImg:'p-clock', cfg:{cols:2}, a:[A(1,'三点','sān diǎn'),A(0,'四点','sì diǎn'),A(0,'三点半','sān diǎn bàn'),A(0,'两点','liǎng diǎn')]},
+    {type:'single', prompt:'Выберите картинку, которая соответствует слову', zh:'书', py:'shū', cfg:{cols:2, amode:'image'}, a:[A(0,'','','p-cup'),A(0,'','','p-apple'),A(1,'','','p-book'),A(0,'','','p-clock')]},
+    {type:'multiple', prompt:'Выберите все слова, которые обозначают цвета', cfg:{cols:2}, a:[A(1,'红色','hóngsè'),A(1,'蓝色','lánsè'),A(0,'老师','lǎoshī'),A(1,'绿色','lǜsè')]},
+    {type:'match', prompt:'Сопоставьте китайские слова с переводом', pairs:[{l:I('你好','nǐ hǎo'), r:I('Привет')},{l:I('谢谢','xièxie'), r:I('Спасибо')},{l:I('再见','zàijiàn'), r:I('До свидания')},{l:I('对不起','duìbuqǐ'), r:I('Извините')}]},
+    {type:'match', prompt:'Сопоставьте слова с картинками', pairs:[{l:I('苹果','píngguǒ'), r:I('','','p-apple')},{l:I('书','shū'), r:I('','','p-book')},{l:I('杯子','bēizi'), r:I('','','p-cup')},{l:I('时钟','shízhōng'), r:I('','','p-clock')}]},
+    {type:'order', prompt:'Расставьте реплики диалога в правильном порядке', cfg:{ov:'list'}, items:[I('你好！','Nǐ hǎo!'),I('你叫什么名字？','Nǐ jiào shénme míngzi?'),I('我叫李明。','Wǒ jiào Lǐ Míng.'),I('很高兴认识你。','Hěn gāoxìng rènshi nǐ.')]},
+    {type:'order', prompt:'Составьте предложение из слов', hint:'Я каждый день пью чашку чая.', cfg:{ov:'line'}, items:[I('我','wǒ'),I('每天','měitiān'),I('喝','hē'),I('一杯','yì bēi'),I('茶','chá')]},
+    {type:'order', prompt:'Расставьте картинки в том порядке, в котором названы слова', hint:'书 → 苹果 → 时钟 → 杯子', cfg:{ov:'line'}, items:[I('','','p-book'),I('','','p-apple'),I('','','p-clock'),I('','','p-cup')]},
+    {type:'place', prompt:'Перетащите слова на предметы в комнате', poolTitle:'Слова', scene:'room', cfg:{pm:'snap', pi:'line'}, zones:Z,
+      items:[I('床','chuáng'),I('桌子','zhuōzi'),I('灯','dēng'),I('窗户','chuānghu'),I('书架','shūjià')].map((it,k) => ({...it, x:P[k][0], y:P[k][1], zn:k}))},
+    {type:'place', prompt:'Разложите предметы по полкам', poolTitle:'Предметы', scene:'shop', cfg:{pm:'zone'}, zones:[[[19,3],[91,3],[91,32],[19,32]],[[19,33],[91,33],[91,62],[19,62]],[[19,63],[91,63],[91,92],[19,92]]],
+      items:[{img:'p-apple',x:35,y:22.4,zn:0},{img:'p-book',x:35,y:52.6,zn:1},{img:'p-cup',x:35,y:81.6,zn:2},{img:'p-banana',x:55,y:22.4,zn:0}]},
+    {type:'gap', prompt:'Впишите пропущенные слова в диалог', cfg:{gm:'input'}, text:'A：你叫什么{名字}？\nB：我{叫}李明。你{呢}？', gaps:[{s:'míngzi',hint:'имя'},{s:'jiào',hint:'зовут'},{s:'ne',hint:'частица'}], extra:[I('吗','ma')], hint:''},
+    {type:'gap', prompt:'Перенесите слова в пропуски', cfg:{gm:'bank'}, hint:'Я каждый день пью чашку чая. Он любит читать книги.', text:'我每天{喝}一杯{茶}。\n他喜欢{看}书。', gaps:[{s:'hē'},{s:'chá'},{s:'kàn'}], extra:[I('买','mǎi')]},
+    {type:'gap', prompt:'Вставьте картинки в пропуски', cfg:{gm:'bank'}, hint:'На столе есть яблоко и книга.', text:'桌子上有{яблоко}和{книга}。', gaps:[{img:'p-apple'},{img:'p-book'}], extra:[I('','','p-cup'),I('','','p-clock')]},
+    {type:'essay', prompt:'Напишите связный текст по теме', zh:'请介绍一下你的一天。', py:'Qǐng jièshào yíxià nǐ de yìtiān.', req:'每天, 起床, 上学, 吃饭', cfg:{em:'both', lim:'500'}, criteria:'Содержание — 2 балла, грамматика — 2 балла, использованы все слова — 1 балл.'},
+    {type:'essay', prompt:'Опишите, что вы видите на картинке', zh:'', py:'', qImg:'scene:room', req:'床, 桌子, 灯, 窗户', cfg:{em:'text', lim:'200'}, criteria:''},
+    {type:'single', prompt:'Прослушайте запись и выберите правильный ответ. Где находятся говорящие?', zh:'', py:'', qa:DEMO_AU(14), cfg:{cols:2, plays:'2'}, a:[A(1,'В кафе'),A(0,'В школе'),A(0,'Дома'),A(0,'В магазине')]},
+    {type:'single', prompt:'Выберите запись, которая соответствует фразе', zh:'我喜欢喝茶。', py:'Wǒ xǐhuān hē chá.', cfg:{cols:1, plays:'1'}, a:[A(1,'','','',4),A(0,'','','',5),A(0,'','','',4)]},
+    {type:'record', prompt:'Прочитайте предложение вслух', zh:'我每天早上七点起床，然后喝一杯茶。', py:'Wǒ měitiān zǎoshang qī diǎn qǐchuáng, ránhòu hē yì bēi chá.', hint:'Я каждый день встаю в семь утра, а потом пью чашку чая.', cfg:{rd:'60', rt:'3'}, criteria:'Тоны — 2 балла, беглость — 2 балла, полнота — 1 балл.'},
+    {type:'record', prompt:'Прослушайте вопрос и ответьте на него устно', zh:'', py:'', hint:'', qa:DEMO_AU(8), cfg:{rd:'30', rt:'1', plays:'2'}, criteria:''},
+    ...['hz-strokes','hz-keys','hz-order','hz-strokes','hz-keys','hz-order'].map((type, hzRef) => ({type, hzRef, prompt:''}))
+  ].map((q, i) => ({id:uid(), points:MANUAL(q.type) ? 5 : 1, status:'ready', mod:Date.now() - (30 - i) * 36e5, ...q}));
+}
+function seed(){
+  return {courses:[
+    {id:'yct1', title:'YCT 1', sub:'Начальный уровень: базовые слова и фразы', zh:'一级', c:'#E6A046', qs:seedQs().slice(0, 6), tickets:[]},
+    {id:'yct2', title:'YCT 2', sub:'Базовый уровень: простые предложения', zh:'二级', c:'#436986', qs:seedQs(), tickets:[
+      {id:uid(), name:'Ли Мин', login:'SR-2041', pass:mkPass(), st:'in'}, {id:uid(), name:'Соня Ким', login:'SR-2042', pass:mkPass(), st:'new'}, {id:uid(), name:'Артём Белов', login:'SR-2043', pass:mkPass(), st:'new'}]},
+    {id:'yct3', title:'YCT 3', sub:'Средний уровень: расширенный словарный запас', zh:'三级', c:'#46806A', qs:[], tickets:[]},
+    {id:'yct4', title:'YCT 4', sub:'Продвинутый уровень: сложные конструкции', zh:'四级', c:'#A1432C', qs:[], tickets:[]}
+  ], cur:null};
+}
+
+/* ---------- хранение (макет: localStorage; в продукте — Moodle) ---------- */
+const KEY = 'oly-teacher-v1';
+function mkPass(){
+  const abc = 'abcdefghjkmnpqrstuvwxyz23456789', b = crypto.getRandomValues(new Uint8Array(8));
+  return [...b].map(x => abc[x % abc.length]).join('');
+}
+let DB;
+try{ DB = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+if(!DB || !DB.courses) DB = seed();
+let saveT, saveOk = true;
+function save(now){
+  clearTimeout(saveT);
+  const run = () => {
+    try{ localStorage.setItem(KEY, JSON.stringify(DB)); saveOk = true; }catch(e){ saveOk = false; }
+    const el = $('#edSaved'); el.classList.remove('saving'); el.classList.toggle('err', !saveOk);
+    el.textContent = saveOk ? 'Сохранено' : 'Не сохранено: хранилище браузера переполнено';
+  };
+  if(now) return run();
+  const el = $('#edSaved'); el.classList.add('saving'); el.textContent = 'Сохраняем…';
+  saveT = setTimeout(run, 400);
+}
+const sess = {get:() => { try{ return sessionStorage.getItem(KEY + ':in') === '1'; }catch(e){ return sess.v; } }, set:v => { sess.v = v; try{ sessionStorage.setItem(KEY + ':in', v ? '1' : ''); }catch(e){} }, v:false};
+const course = () => DB.courses.find(c => c.id === DB.cur);
+
+/* ---------- модалка ---------- */
+function modal(html, onClick){
+  $('#modal').innerHTML = html; $('#backdrop').hidden = false;
+  $('#modal').onclick = e => { const a = e.target.closest('[data-act]'); if(a && onClick(a.dataset.act, a) !== false) $('#backdrop').hidden = true; };
+  const f = $('#modal input, #modal [data-act]'); f && f.focus();
+}
+$('#backdrop').addEventListener('click', e => { if(e.target.id === 'backdrop') e.currentTarget.hidden = true; });
+addEventListener('keydown', e => { if(e.key !== 'Escape') return; if(!$('#backdrop').hidden) $('#backdrop').hidden = true; else if($('#pv').classList.contains('full')) pvSetFull(false); });
+
+/* ---------- тема ---------- */
+const isDark = () => { const r = document.documentElement; return r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme:dark)').matches; };
+$('#themeBtn').addEventListener('click', () => { document.documentElement.dataset.theme = isDark() ? 'light' : 'dark'; PVS.theme = null; pvTheme(); });
+
+/* ---------- экраны ---------- */
+let editing = null;
+function go(name, arg){ location.hash = '#/' + name + (arg ? '/' + arg : ''); }
+function route(){
+  let [name, arg] = location.hash.replace(/^#\/?/, '').split('/');
+  if(!sess.get()) name = 'auth';
+  else if(!name || name === 'auth') name = 'courses';
+  if(name !== 'courses' && !course()) name = 'courses';
+  if(name === 'edit'){ editing = course().qs.find(q => q.id === arg) || null; if(!editing) name = 'bank'; }
+  $('#s-auth').hidden = name !== 'auth'; $('#app').hidden = name === 'auth';
+  ['courses','bank','tickets','edit'].forEach(n => $('#s-' + n).hidden = n !== name);
+  $$('#tabs .tab').forEach(b => { b.setAttribute('aria-current', String(b.dataset.go === name || (name === 'edit' && b.dataset.go === 'bank'))); b.disabled = b.dataset.go !== 'courses' && !course(); });
+  const c = course(); $('#crs').hidden = !c; if(c) $('#crs').textContent = 'Курс: ' + c.title;
+  if(name !== 'edit') pvSetFull(false);
+  ({courses:paintCourses, bank:paintBank, tickets:paintTickets, edit:openEditor}[name] || (() => {}))();
+  if(name !== 'edit') scrollTo(0, 0);
+}
+addEventListener('hashchange', route);
+document.addEventListener('click', e => { const b = e.target.closest('[data-go]'); if(b && !b.disabled) go(b.dataset.go); });
+$('#loginForm').addEventListener('submit', e => { e.preventDefault(); sess.set(true); go('courses'); route(); });
+$('#logout').addEventListener('click', () => { sess.set(false); go('auth'); route(); });
+$('#pwToggle').addEventListener('click', e => { const i = $('#pw'), show = i.type === 'password'; i.type = show ? 'text' : 'password'; e.target.textContent = show ? 'Скрыть' : 'Показать'; });
+
+/* ---------- курсы ---------- */
+const dia = c => `<svg viewBox="0 0 84 84" aria-hidden="true"><path d="M42 2Q48 36 82 42Q48 48 42 82Q36 48 2 42Q36 36 42 2Z" fill="${c}"/></svg>`;
+function paintCourses(){
+  $('#s-courses').innerHTML = `<div class="head"><div><div class="eyebrow">Олимпиада по китайскому языку · 2026/27</div><h1>Выберите курс</h1>
+    <p>Каждый уровень YCT — отдельный курс со своим банком заданий и своими участниками.</p></div></div>
+    <div class="courses">${DB.courses.map(c => { const ready = c.qs.filter(q => q.status === 'ready').length;
+      return `<article class="ccard"><div class="c-top"><div class="dia">${dia(c.c)}<span>${h(c.zh)}</span></div><span class="pill ${c.qs.length ? 'ok' : ''}">${c.qs.length ? 'В работе' : 'Пусто'}</span></div>
+        <div><h3>${h(c.title)}</h3><p class="sub">${h(c.sub)}</p></div>
+        <div class="meta"><span><b>${c.qs.length}</b> заданий</span><span><b>${ready}</b> готово</span><span><b>${c.tickets.length}</b> участников</span></div>
+        <button class="btn ${c.id === DB.cur ? 'btn-primary' : 'btn-line'}" data-course="${c.id}">${c.id === DB.cur ? 'Продолжить работу' : 'Открыть курс'}</button></article>`; }).join('')}
+      <button class="ccard new" id="newCourse">+ Новый курс</button></div>`;
+}
+$('#s-courses').addEventListener('click', e => {
+  const b = e.target.closest('[data-course]');
+  if(b){ DB.cur = b.dataset.course; save(true); go('bank'); return; }
+  if(e.target.closest('#newCourse')) modal(`<div class="eyebrow">Новый курс</div><h3>Создать курс</h3>
+    <div class="field"><label for="ncT">Название</label><input class="in" id="ncT" placeholder="Например, YCT 2 · пробный тур"></div>
+    <div class="field"><label for="ncS">Описание</label><input class="in" id="ncS" placeholder="Коротко: уровень, для кого"></div>
+    <div class="row"><button class="btn btn-line" data-act="no">Отмена</button><button class="btn btn-primary" data-act="ok">Создать</button></div>`, a => {
+      if(a !== 'ok') return; const t = $('#ncT').value.trim(); if(!t){ $('#ncT').focus(); return false; }
+      DB.courses.push({id:uid(), title:t, sub:$('#ncS').value.trim(), zh:'汉语', c:PAL[DB.courses.length % 5], qs:[], tickets:[]}); save(true); paintCourses(); });
+});
+
+/* ---------- банк заданий ---------- */
+const BF = {g:'all', q:''};
+function snippet(q){
+  const its = q.a || q.items || (q.pairs && q.pairs.map(p => p.l)) || [];
+  const parts = [q.zh, q.type === 'gap' ? q.text.replace(/\n/g, ' ') : '', its.map(i => i.t).filter(Boolean).join(' · '), q.qa ? '♪ аудио' : ''].filter(Boolean);
+  return q.type.startsWith('hz-') ? 'Из редактора заданий по иероглифам' : parts.join('  —  ') || 'Без содержимого';
+}
+const promptOf = q => q.prompt || (q.type.startsWith('hz-') && ASSETS && ASSETS.hz[q.hzRef] ? ASSETS.hz[q.hzRef].prompt : '');
+function paintBank(){
+  const c = course(), list = c.qs.map((q, i) => [q, i]).filter(([q]) => (BF.g === 'all' || groupOf(q.type) === BF.g) && (!BF.q || (promptOf(q) + ' ' + snippet(q)).toLowerCase().includes(BF.q.toLowerCase())));
+  $('#s-bank').innerHTML = `<div class="head"><div><div class="eyebrow">${h(c.title)} · ${h(c.sub)}</div><h1>Банк заданий</h1>
+      <p>${c.qs.length} заданий, готово ${c.qs.filter(q => q.status === 'ready').length}. Нажмите на задание, чтобы открыть редактор с предпросмотром.</p></div>
+      <button class="btn btn-primary" id="newQ">+ Создать задание</button></div>
+    <div class="tools"><input class="in" id="bq" type="search" placeholder="Поиск по формулировке и тексту" value="${h(BF.q)}" aria-label="Поиск">
+      <div class="filters">${GROUPS.map(([k, n]) => `<button class="chip" aria-pressed="${BF.g === k}" data-g="${k}">${n}</button>`).join('')}</div></div>
+    <div class="qlist" id="qlist">${list.map(([q, i]) => { const bad = issues(q).length;
+      return `<article class="qrow"><span class="n">${i + 1}</span><span><span class="pill type">${TYPES[q.type].n}</span></span>
+        <button class="qmain" data-edit="${q.id}"><b>${h(promptOf(q)) || '<span class="muted" style="display:inline">Без формулировки</span>'}</b><span>${h(snippet(q))}</span></button>
+        <span class="pts">${q.points} ${MANUAL(q.type) ? 'б. · эксперт' : 'б.'}</span>
+        <span><span class="pill ${q.status === 'ready' ? 'ok' : 'draft'}">${q.status === 'ready' ? 'Готово' : 'Черновик'}</span>${bad ? ` <span class="warn-dot" title="Есть замечания: ${bad}">!</span>` : ''}</span>
+        <span class="qacts"><button class="btn btn-line sm" data-edit="${q.id}">Изменить</button><button class="x" data-dup="${q.id}" title="Дублировать" aria-label="Дублировать">⧉</button><button class="x" data-del="${q.id}" title="Удалить" aria-label="Удалить">✕</button></span></article>`; }).join('')
+      || `<div class="empty"><b>${c.qs.length ? 'Ничего не найдено' : 'В этом курсе пока нет заданий'}</b>${c.qs.length ? 'Измените поиск или фильтр.' : 'Создайте первое задание: тип выбирается на следующем шаге.'}</div>`}</div>`;
+}
+$('#s-bank').addEventListener('input', e => { if(e.target.id !== 'bq') return; BF.q = e.target.value; paintBank(); const i = $('#bq'); i.focus(); i.setSelectionRange(BF.q.length, BF.q.length); });
+$('#s-bank').addEventListener('click', e => {
+  const c = course(), t = e.target, by = k => { const b = t.closest(`[data-${k}]`); return b && b.dataset[k]; };
+  if(by('g')){ BF.g = by('g'); paintBank(); }
+  else if(by('edit')) go('edit', by('edit'));
+  else if(by('dup')){ const i = c.qs.findIndex(q => q.id === by('dup')), n = JSON.parse(JSON.stringify(c.qs[i])); n.id = uid(); n.status = 'draft'; n.mod = Date.now(); c.qs.splice(i + 1, 0, n); save(true); paintBank(); }
+  else if(by('del')){ const id = by('del'), q = c.qs.find(x => x.id === id);
+    modal(`<div class="eyebrow">Удаление</div><h3>Удалить задание?</h3><p>«${h(promptOf(q)) || 'Без формулировки'}» будет удалено из банка курса ${h(c.title)}. Вернуть его не получится.</p>
+      <div class="row"><button class="btn btn-line" data-act="no">Оставить</button><button class="btn btn-primary" data-act="del">Удалить</button></div>`, a => { if(a === 'del'){ c.qs = c.qs.filter(x => x.id !== id); save(true); paintBank(); } }); }
+  else if(t.closest('#newQ')) pickType();
+});
+function pickType(){
+  const base = ['single','multiple','match','order','place','gap','essay','record'];
+  modal(`<div class="eyebrow">Новое задание</div><h3>Выберите тип</h3>
+    <div class="types">${base.map(k => `<button data-act="${k}"><b>${TYPES[k].n}</b><span>${TYPES[k].d}</span></button>`).join('')}
+      <button data-act="audio"><b>Аудирование</b><span>Запись в вопросе и выбор ответа</span></button></div>
+    ${ASSETS ? `<div class="eyebrow">Иероглифы · из редактора заданий по чертам</div><div class="types">${ASSETS.hz.map(z => `<button data-act="hz:${z.ref}"><b>${TYPES[z.type].n}</b><span>${h(z.prompt)}</span></button>`).join('')}</div>` : ''}
+    <div class="row"><button class="btn btn-line" data-act="no">Отмена</button></div>`, a => {
+      if(a === 'no') return;
+      let q;
+      if(a.startsWith('hz:')){ const z = ASSETS.hz[+a.slice(3)]; q = {...blank(z.type), hzRef:z.ref}; }
+      else if(a === 'audio'){ q = blank('single'); q.qa = DEMO_AU(10); q.prompt = 'Прослушайте запись и выберите правильный ответ'; }
+      else q = blank(a);
+      course().qs.push(q); save(true); go('edit', q.id);
+    });
+}
+
+/* ---------- тикеты участников ---------- */
+function paintTickets(){
+  const c = course(), T = c.tickets, ST = {new:['Не выдан',''], out:['Выдан','draft'], in:['Вошёл','ok']};
+  $('#s-tickets').innerHTML = `<div class="head"><div><div class="eyebrow">${h(c.title)} · ${h(c.sub)}</div><h1>Тикеты участников</h1>
+      <p>Тикет — это логин и пароль для входа участника. Сгенерируйте их списком, распечатайте карточки или выгрузите CSV для загрузки пользователей в Moodle.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-line" id="tCsv" ${T.length ? '' : 'disabled'}>Скачать CSV</button><button class="btn btn-line" id="tPrint" ${T.length ? '' : 'disabled'}>Печать карточек</button></div></div>
+    <div class="tgrid"><form class="card" id="tForm"><h3>Сгенерировать тикеты</h3>
+        <div class="field"><label for="tNames">Список участников</label><textarea class="in" id="tNames" rows="6" placeholder="Фамилия Имя, по одному в строке.&#10;Можно оставить пустым и указать только количество."></textarea></div>
+        <div class="row2"><div class="field"><label for="tN">Количество</label><input class="in" id="tN" type="number" min="1" max="500" value="10"></div>
+          <div class="field"><label for="tP">Префикс логина</label><input class="in" id="tP" value="SR" maxlength="6"></div></div>
+        <p class="note">Если список заполнен, количество берётся из него. Логин: префикс и номер, пароль: 8 знаков без похожих символов (0/O, 1/l).</p>
+        <button class="btn btn-primary" type="submit">Сгенерировать</button></form>
+      <div class="card"><h3>Участники курса · ${T.length}</h3>
+        ${T.length ? `<div class="tscroll"><table class="ttable"><thead><tr><th>№</th><th>Участник</th><th>Логин</th><th>Пароль</th><th>Состояние</th><th></th></tr></thead><tbody>
+          ${T.map((t, i) => `<tr><td>${i + 1}</td><td>${h(t.name) || '<span class="muted">Без имени</span>'}</td><td class="mono">${h(t.login)}</td><td class="mono">${h(t.pass)}</td>
+            <td><span class="pill ${ST[t.st][1]}">${ST[t.st][0]}</span></td>
+            <td><span class="qacts" style="justify-content:flex-end"><button class="btn btn-line sm" data-re="${t.id}">Новый пароль</button><button class="x" data-rm="${t.id}" aria-label="Удалить тикет" title="Удалить">✕</button></span></td></tr>`).join('')}
+          </tbody></table></div>` : `<div class="empty"><b>Тикетов пока нет</b>Вставьте список участников или укажите количество и нажмите «Сгенерировать».</div>`}</div></div>`;
+}
+$('#s-tickets').addEventListener('submit', e => {
+  e.preventDefault();
+  const c = course(), names = $('#tNames').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const n = names.length || Math.min(500, Math.max(1, +$('#tN').value || 0)), pre = ($('#tP').value.trim() || 'SR').toUpperCase();
+  const used = new Set(DB.courses.flatMap(x => x.tickets.map(t => t.login)));
+  let num = 2041;
+  for(let i = 0; i < n; i++){ while(used.has(`${pre}-${num}`)) num++; const login = `${pre}-${num}`; used.add(login); c.tickets.push({id:uid(), name:names[i] || '', login, pass:mkPass(), st:'new'}); }
+  save(true); paintTickets();
+});
+$('#s-tickets').addEventListener('click', e => {
+  const c = course(), t = e.target, re = t.closest('[data-re]'), rm = t.closest('[data-rm]');
+  if(re){ const k = c.tickets.find(x => x.id === re.dataset.re); k.pass = mkPass(); k.st = 'new'; save(true); paintTickets(); }
+  else if(rm){ const k = c.tickets.find(x => x.id === rm.dataset.rm);
+    modal(`<div class="eyebrow">Удаление</div><h3>Удалить тикет ${h(k.login)}?</h3><p>${k.name ? h(k.name) + ' не сможет' : 'Участник не сможет'} войти с этим логином и паролем.</p>
+      <div class="row"><button class="btn btn-line" data-act="no">Оставить</button><button class="btn btn-primary" data-act="del">Удалить</button></div>`, a => { if(a === 'del'){ c.tickets = c.tickets.filter(x => x !== k); save(true); paintTickets(); } }); }
+  else if(t.closest('#tCsv')){
+    const cell = v => /[",\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v;
+    const rows = [['username','password','firstname','lastname','course1'], ...c.tickets.map(k => { const [ln = '', ...fn] = k.name.split(/\s+/); return [k.login.toLowerCase(), k.pass, fn.join(' ') || 'Участник', ln || k.login, c.title]; })];
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + rows.map(r => r.map(cell).join(',')).join('\n')], {type:'text/csv'}));
+    a.download = `tickets-${c.id}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    c.tickets.forEach(k => { if(k.st === 'new') k.st = 'out'; }); save(true); paintTickets();
+  }
+  else if(t.closest('#tPrint')){
+    $('#cards').innerHTML = c.tickets.map(k => `<div class="tk"><h4>Олимпиада по китайскому языку · ${h(c.title)}</h4>${h(k.name) || 'Участник'}<dl><dt>Логин</dt><dd>${h(k.login)}</dd><dt>Пароль</dt><dd>${h(k.pass)}</dd></dl></div>`).join('');
+    print(); c.tickets.forEach(k => { if(k.st === 'new') k.st = 'out'; }); save(true); paintTickets();
+  }
+});
+
+/* ---------- замечания к заданию ---------- */
+function issues(q){
+  const out = [], empty = it => !it.t && !it.img && !it.au;
+  if(q.type.startsWith('hz-')) return out;
+  if(!q.prompt.trim()) out.push('Нет формулировки задания.');
+  if(q.a){
+    if(q.a.length < 2) out.push('Нужно минимум два варианта ответа.');
+    if(q.a.some(empty)) out.push('Есть пустой вариант ответа.');
+    const n = q.a.filter(a => a.ok).length;
+    if(!n) out.push('Не отмечен правильный ответ.');
+    if(q.type === 'single' && n > 1) out.push('Для «одного ответа» верным может быть только один вариант.');
+  }
+  if(q.type === 'match'){ if(q.pairs.length < 2) out.push('Нужно минимум две пары.'); if(q.pairs.some(p => empty(p.l) || empty(p.r))) out.push('В паре не заполнена одна из сторон.'); }
+  if(q.type === 'order'){ if(q.items.length < 2) out.push('Нужно минимум два элемента.'); if(q.items.some(empty)) out.push('Есть пустой элемент.'); }
+  if(q.type === 'place'){
+    if(!q.items.length) out.push('Добавьте элементы для размещения.'); if(q.items.some(empty)) out.push('Есть пустой элемент.');
+    if((q.cfg.pm || 'snap') !== 'snap' && (!q.zones.length || q.items.some(it => !(it.zn < q.zones.length)))) out.push('Не для всех элементов задана зона.');
+  }
+  if(q.type === 'gap' && !parseGap(q).answers.length) out.push('В тексте нет пропусков: выделите слово и нажмите «Сделать пропуском».');
+  return out;
+}
+
+/* ---------- перевод задания в формат окна участника (без правильных ответов) ---------- */
+function shuf(arr, seed){
+  let x = 0; for(const ch of seed) x = (x * 31 + ch.charCodeAt(0)) | 0;
+  const rnd = () => { x = x + 0x6D2B79F5 | 0; let t = Math.imul(x ^ x >>> 15, 1 | x); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const a = arr.map((_, i) => i);
+  for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(rnd() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  if(a.length > 1 && a.every((v, i) => v === i)) a.push(a.shift());
+  return a.map(i => arr[i]);
+}
+const sI = it => I(it.t && h(it.t), it.s && h(it.s), it.img);
+const sceneOf = q => typeof q.scene === 'string' ? {html:ASSETS.scenes[q.scene], ratio:600/380} : {html:`<img class="pscene" src="${q.scene.src}" alt="" draggable="false">`, ratio:q.scene.ratio};
+function parseGap(q){
+  const answers = [];
+  const lines = q.text.split('\n').filter(l => l.trim()).map(l => l.split(/(\{[^{}]*\})/).filter(Boolean).map(p => /^\{.*\}$/.test(p) ? {g:answers.push(p.slice(1, -1)) - 1} : p));
+  return {lines, answers};
+}
+function toStudent(q){
+  const cfg = {...q.cfg, type:q.type}, o = {type:q.type, prompt:h(q.prompt), cfg};
+  if(q.type.startsWith('hz-')) return {type:q.type, hzRef:q.hzRef, cfg};
+  if(q.zh) Object.assign(o, {zh:h(q.zh), py:h(q.py)});
+  if(q.qa) o.qa = {dur:q.qa.dur};
+  if(q.hint) o.hint = h(q.hint);
+  if(q.a){ o.cols = cfg.cols || 2; if(q.qImg) o.qImg = q.qImg; o.a = q.a.map(a => Object.assign(sI(a), a.au ? {au:a.au.dur} : {})); }
+  if(q.type === 'match'){ o.L = q.pairs.map(p => sI(p.l)); o.R = shuf(q.pairs.map(p => sI(p.r)), q.id); }
+  if(q.type === 'order'){ o.items = shuf(q.items.map(sI), q.id); o.ov = cfg.ov || 'list'; }
+  if(q.type === 'place'){ const s = sceneOf(q); Object.assign(o, {scene:s.html, ratio:s.ratio, poolTitle:h(q.poolTitle) || 'Элементы', items:q.items.map(sI), points:shuf(q.items.map(it => ({x:it.x, y:it.y})), q.id), zones:q.zones}); }
+  if(q.type === 'gap'){
+    const g = parseGap(q), G = i => q.gaps[i] || {};
+    o.bank = shuf([...g.answers.map((a, i) => G(i).img ? {img:G(i).img} : I(h(a), G(i).s && h(G(i).s))), ...q.extra.map(sI)], q.id);
+    if(o.bank.some(b => b.img)) cfg.gm = 'bank';
+    o.lines = g.lines.map(l => l.map(p => typeof p === 'string' ? h(p) : {g:p.g, w:Math.min(8, Math.max(1, [...g.answers[p.g]].length)), hint:h(G(p.g).hint)}));
+  }
+  if(q.type === 'essay'){ const req = q.req.split(/[,，、]/).map(s => s.trim()).filter(Boolean); if(req.length) o.req = req.map(h); if(q.qImg) o.qImg = q.qImg.startsWith('scene:') ? ASSETS.scenes[q.qImg.slice(6)] : q.qImg; }
+  return o;
+}
+
+/* ---------- предпросмотр: тот же olympiad.html во фрейме ---------- */
+let ASSETS = null;
+const PVS = {dev:'desk', full:false, theme:null, fits:true, pendingForm:false, rev:0, wait:false};
+const frame = $('#pvIframe');
+const post = m => frame.contentWindow && frame.contentWindow.postMessage(m, '*');
+let pvT;
+function sendPv(now){
+  clearTimeout(pvT); if(!ASSETS || !editing) return;
+  const c = course(), run = () => { PVS.wait = false; post({type:'oly:set', rev:++PVS.rev, questions:[toStudent(editing)], i:0, title:c.title, sub:'Олимпиада по китайскому языку · 2026/27'}); };
+  PVS.wait = true; now ? run() : (pvT = setTimeout(run, 140));
+}
+function pvTheme(){ post({type:'oly:theme', theme:PVS.theme || (isDark() ? 'dark' : 'light')}); }
+addEventListener('message', e => {
+  const m = e.data; if(e.source !== frame.contentWindow || !m) return;
+  if(m.type === 'oly:ready'){
+    ASSETS = m; $('#sprite').innerHTML = m.sprite; pvTheme();
+    if(editing){ renderForm(); sendPv(true); } else route();
+  } else if(m.type === 'oly:state' && editing && !PVS.wait && m.rev === PVS.rev){   /* ответы на устаревшие посылки не принимаем */
+    const q = editing, was = JSON.stringify(q.cfg);
+    q.cfg = m.cfg; PVS.fits = m.fits; PVS.tune = m.tune;
+    if(PVS.pendingForm && (m.cfg.type === 'single' || m.cfg.type === 'multiple') && m.cfg.type !== q.type){ q.type = m.cfg.type; if(q.type === 'single'){ let seen = false; q.a.forEach(a => { a.ok = a.ok && !seen && (seen = true); }); } }
+    if(JSON.stringify(q.cfg) !== was) save();
+    if(PVS.pendingForm){ PVS.pendingForm = false; renderForm(); } else { const el = $('#edTune'); if(el) el.innerHTML = m.tune; paintMeta(); }
+  }
+});
+function pvLayout(){
+  const v = $('#pvView'), W = v.clientWidth - 28, H = v.clientHeight - 28; if(W <= 0 || H <= 0) return;
+  const phone = PVS.dev === 'phone';
+  let vw = phone ? 390 : 1200, vh = phone ? 780 : 740;
+  if(!phone && PVS.full && W >= 1100){ vw = W; vh = H; }
+  const s = Math.min(1, W / vw, H / vh);
+  Object.assign($('#pvFrame').style, {width:vw * s + 'px', height:vh * s + 'px'});
+  Object.assign(frame.style, {width:vw + 'px', height:vh + 'px', transform:`scale(${s})`});
+  $('#pvSize').textContent = `${Math.round(vw)}×${Math.round(vh)} · масштаб ${Math.round(s * 100)}%`;
+}
+function pvSetFull(on){ PVS.full = on; $('#pv').classList.toggle('full', on); $('#pvFull').textContent = on ? 'Свернуть' : 'Развернуть'; pvLayout(); }
+new ResizeObserver(pvLayout).observe($('#pvView'));
+$('#pvDev').addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; PVS.dev = b.dataset.v; $$('#pvDev button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); $('#pv').classList.toggle('phone', PVS.dev === 'phone'); pvLayout(); });
+$('#pvFull').addEventListener('click', () => pvSetFull(!PVS.full));
+$('#pvOpen').addEventListener('click', () => pvSetFull(true));
+$('#pvReset').addEventListener('click', () => sendPv(true));
+$('#pvTheme').addEventListener('click', () => { const cur = PVS.theme || (isDark() ? 'dark' : 'light'); PVS.theme = cur === 'dark' ? 'light' : 'dark'; pvTheme(); });
+
+/* ---------- редактор ---------- */
+const IMG_PH = '<svg class="ph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></svg>';
+const thumb = v => !v ? IMG_PH : v.startsWith('scene:') ? (ASSETS ? ASSETS.scenes[v.slice(6)] : '') : /^(data:|blob:|https?:)/.test(v) ? `<img src="${v}" alt="">` : `<svg viewBox="0 0 120 90"><use href="#${v}"/></svg>`;
+const getP = (o, p) => p.split('.').reduce((a, k) => a == null ? a : a[k], o);
+function setP(o, p, v){ const ks = p.split('.'), last = ks.pop(), t = ks.reduce((a, k) => a[k] ?? (a[k] = {}), o); if(v == null) delete t[last]; else t[last] = v; }
+const fmtT = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+const imgBtn = (p, v, cls = '') => `<button type="button" class="it-img ${v ? 'on' : ''} ${cls}" data-act="img" data-p="${p}" title="${v ? 'Заменить картинку' : 'Добавить картинку'}" aria-label="Картинка">${thumb(v)}</button>`;
+const itemEd = (p, it, ph = 'Текст') => `<div class="it">${imgBtn(p + '.img', it.img)}<input class="in zh" data-p="${p}.t" value="${h(it.t)}" placeholder="${ph}" aria-label="${ph}"><input class="in" data-p="${p}.s" value="${h(it.s)}" placeholder="Подпись, пиньинь" aria-label="Подпись"></div>`;
+const audEd = (p, v) => v ? `<span class="aud on"><span>♪ ${h(v.name)} · ${fmtT(v.dur)}</span><button type="button" class="x" style="width:22px;height:22px;border:0;background:transparent" data-act="audDel" data-p="${p}" aria-label="Убрать звук">✕</button></span>`
+  : `<button type="button" class="aud" data-act="aud" data-p="${p}">♪ Звук</button>`;
+const delBtn = (list, i, min = 0, n = 99) => `<button type="button" class="x" data-act="del" data-p="${list}" data-i="${i}" ${n <= min ? 'disabled' : ''} aria-label="Удалить" title="Удалить">✕</button>`;
+const addBtn = (list, kind, label) => `<div><button type="button" class="btn btn-line sm" data-act="add" data-p="${list}" data-kind="${kind}">+ ${label}</button></div>`;
+const fld = (label, inner, id) => `<div class="field"><label ${id ? `for="${id}"` : ''}>${label}</label>${inner}</div>`;
+const stemEd = q => `<div class="rw" style="align-items:flex-start">${imgBtn('qImg', q.qImg, 'big')}
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><input class="in zh" data-p="zh" value="${h(q.zh)}" placeholder="Текст вопроса на китайском (необязательно)" aria-label="Текст вопроса" style="font-size:18px;min-height:46px">
+  <input class="in" data-p="py" value="${h(q.py)}" placeholder="Пиньинь" aria-label="Пиньинь"></div></div>`;
+
+function formBody(q){
+  const t = q.type;
+  if(t.startsWith('hz-')) return `<section class="card"><h3>Содержимое</h3><p class="hint">${h(promptOf(q))}</p><p class="note">Иероглиф, черты и ключи этого задания задаются в редакторе заданий по иероглифам (animcjk-task-editor). Здесь задание можно посмотреть в окне участника, назначить баллы и состояние.</p></section>`;
+  if(q.a) return `<section class="card"><h3>Вопрос</h3>${stemEd(q)}<div class="rw"><span class="note" style="flex:1">Картинка и звук в вопросе необязательны.</span>${audEd('qa', q.qa)}</div></section>
+    <section class="card"><h3>Варианты ответа</h3><p class="note">Отметьте ${t === 'single' ? 'верный вариант' : 'все верные варианты'} галочкой слева. Участник правильных ответов не получает.</p>
+      <div class="rows">${q.a.map((a, i) => `<div class="rw"><label class="okc" title="Верный ответ"><input type="checkbox" data-p="a.${i}.ok" data-ok ${a.ok ? 'checked' : ''} aria-label="Вариант ${i + 1} верный"></label>${itemEd('a.' + i, a, 'Вариант ' + (i + 1))}${audEd(`a.${i}.au`, a.au)}${delBtn('a', i, 2, q.a.length)}</div>`).join('')}</div>
+      ${addBtn('a', 'opt', 'Вариант')}</section>`;
+  if(t === 'match') return `<section class="card"><h3>Пары</h3><p class="note">Каждая строка — верная пара. В окне участника правая колонка перемешивается.</p>
+      <div class="rows">${q.pairs.map((p, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd(`pairs.${i}.l`, p.l, 'Слева')}<span class="arrow">↔</span>${itemEd(`pairs.${i}.r`, p.r, 'Справа')}${delBtn('pairs', i, 2, q.pairs.length)}</div>`).join('')}</div>
+      ${addBtn('pairs', 'pair', 'Пара')}</section>`;
+  if(t === 'order') return `<section class="card"><h3>Элементы в правильном порядке</h3><p class="note">Запишите элементы так, как они должны стоять. Участник получит их перемешанными.</p>
+      <div class="rows">${q.items.map((it, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd('items.' + i, it, 'Элемент')}
+        <button type="button" class="x" data-act="mv" data-p="items" data-i="${i}" data-d="-1" ${i ? '' : 'disabled'} aria-label="Выше">↑</button><button type="button" class="x" data-act="mv" data-p="items" data-i="${i}" data-d="1" ${i < q.items.length - 1 ? '' : 'disabled'} aria-label="Ниже">↓</button>${delBtn('items', i, 2, q.items.length)}</div>`).join('')}</div>
+      ${addBtn('items', 'item', 'Элемент')}${fld('Подсказка над заданием (перевод или список слов)', `<input class="in zh" data-p="hint" value="${h(q.hint)}" placeholder="Необязательно">`)}</section>`;
+  if(t === 'place'){
+    const zone = (q.cfg.pm || 'snap') !== 'snap', sc = ASSETS ? sceneOf(q) : {html:'', ratio:600/380};
+    return `<section class="card"><h3>Картинка и места</h3>
+      <div class="rw" style="flex-wrap:wrap"><div class="seg" data-scene>${[['room','Комната'],['shop','Полки']].map(([k, n]) => `<button type="button" aria-pressed="${q.scene === k}" data-act="scene" data-v="${k}">${n}</button>`).join('')}<button type="button" aria-pressed="${typeof q.scene !== 'string'}" data-act="sceneUp">Своя картинка…</button></div>
+        ${zone ? `<button type="button" class="btn btn-line sm" data-act="zAdd">+ Зона</button><button type="button" class="btn btn-line sm danger" data-act="zDel" ${q.zones.length > 1 ? '' : 'disabled'}>Удалить последнюю зону</button>` : ''}</div>
+      <div class="sc" id="sc" style="aspect-ratio:${sc.ratio}">${sc.html}<div id="scOv">${scOverlay(q)}</div></div>
+      <p class="note">${zone ? 'Тяните белые вершины, чтобы изменить форму зоны. Жёлтая точка на стороне добавляет вершину, двойной щелчок по вершине удаляет её.' : 'Перетащите номер каждого элемента на его место на картинке. Вид мест (точки, зоны, скрытые зоны) выбирается в «Оформлении».'}</p></section>
+    <section class="card"><h3>Элементы</h3>
+      <div class="rows">${q.items.map((it, i) => `<div class="rw"><span class="num c" style="--c:var(--m${i % 5})">${i + 1}</span>${itemEd('items.' + i, it, 'Элемент')}
+        ${zone ? `<select class="in" style="flex:none;width:112px" data-p="items.${i}.zn" data-num aria-label="Зона элемента">${q.zones.map((_, z) => `<option value="${z}" ${it.zn === z ? 'selected' : ''}>Зона ${z + 1}</option>`).join('')}</select>` : ''}${delBtn('items', i, 1, q.items.length)}</div>`).join('')}</div>
+      ${addBtn('items', 'place', 'Элемент')}${fld('Заголовок лотка с элементами', `<input class="in" data-p="poolTitle" value="${h(q.poolTitle)}" placeholder="Слова">`)}</section>`;
+  }
+  if(t === 'gap') return `<section class="card"><h3>Текст с пропусками</h3>
+      <textarea class="in zh" id="gapText" data-p="text" rows="4" style="font-size:18px;line-height:1.7" placeholder="我每天{喝}一杯{茶}。">${h(q.text)}</textarea>
+      <div class="rw" style="flex-wrap:wrap"><button type="button" class="btn btn-line sm" data-act="gapWrap">Сделать пропуском выделенное</button><span class="note" style="flex:1;min-width:200px">Пропуск — это верный ответ в фигурных скобках. Новая строка текста — новая строка у участника.</span></div>
+      <div class="gapl" id="gapList">${gapList(q)}</div>
+      ${fld('Подсказка над заданием (перевод)', `<input class="in" data-p="hint" value="${h(q.hint)}" placeholder="Необязательно">`)}</section>
+    <section class="card"><h3>Лишние варианты в банке</h3><p class="note">Показываются только в режиме «Плашки из банка» вместе с верными ответами.</p>
+      <div class="rows">${q.extra.map((it, i) => `<div class="rw">${itemEd('extra.' + i, it, 'Вариант')}${delBtn('extra', i)}</div>`).join('')}</div>${addBtn('extra', 'item', 'Вариант')}</section>`;
+  if(t === 'essay') return `<section class="card"><h3>Вопрос</h3>${stemEd(q)}${fld('Слова, которые нужно использовать (через запятую)', `<input class="in zh" data-p="req" value="${h(q.req)}" placeholder="每天, 起床, 上学">`)}</section>`;
+  if(t === 'record') return `<section class="card"><h3>Вопрос</h3>
+      <input class="in zh" data-p="zh" value="${h(q.zh)}" placeholder="Текст для чтения вслух (необязательно)" aria-label="Текст" style="font-size:18px;min-height:46px">
+      <input class="in" data-p="py" value="${h(q.py)}" placeholder="Пиньинь" aria-label="Пиньинь"><input class="in" data-p="hint" value="${h(q.hint)}" placeholder="Перевод (необязательно)" aria-label="Перевод">
+      <div class="rw"><span class="note" style="flex:1">Вопрос можно задать записью: участник слушает и отвечает устно.</span>${audEd('qa', q.qa)}</div></section>`;
+  return '';
+}
+function gapList(q){
+  const g = parseGap(q), bank = (q.cfg.gm || 'input') === 'bank';
+  while(q.gaps.length < g.answers.length) q.gaps.push({});
+  return g.answers.length ? g.answers.map((a, i) => { const G = q.gaps[i];
+    return `<div class="rw"><span class="num">${i + 1}</span><span class="tag" title="${h(a)}">${h(a) || '—'}</span>${bank
+      ? `${imgBtn(`gaps.${i}.img`, G.img)}<input class="in" data-p="gaps.${i}.s" value="${h(G.s)}" placeholder="Подпись на плашке, пиньинь" aria-label="Подпись">`
+      : `<input class="in zh" data-p="gaps.${i}.alts" value="${h(G.alts)}" placeholder="Также засчитывать (через запятую)" aria-label="Другие верные ответы"><input class="in" data-p="gaps.${i}.hint" value="${h(G.hint)}" placeholder="Подсказка под пропуском" aria-label="Подсказка">`}</div>`; }).join('')
+    : '<p class="note">Пропусков пока нет.</p>';
+}
+function scOverlay(q){
+  if((q.cfg.pm || 'snap') === 'snap') return q.items.map((it, k) => `<span class="sc-pt" data-k="${k}" style="left:${it.x}%;top:${it.y}%;--c:var(--m${k % 5})">${k + 1}</span>`).join('');
+  return `<svg class="sc-z" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${q.zones.map(z => `<polygon points="${z.map(v => v.join(',')).join(' ')}"/>`).join('')}</svg>` + q.zones.map((z, i) => {
+    const cx = z.reduce((s, v) => s + v[0], 0) / z.length, cy = z.reduce((s, v) => s + v[1], 0) / z.length;
+    return z.map((v, j) => { const n = z[(j + 1) % z.length]; return `<span class="sc-m" data-z="${i}" data-v="${j}" style="left:${(v[0] + n[0]) / 2}%;top:${(v[1] + n[1]) / 2}%"></span>`; }).join('')
+      + z.map((v, j) => `<span class="sc-v" data-z="${i}" data-v="${j}" style="left:${v[0]}%;top:${v[1]}%"></span>`).join('') + `<span class="sc-n" style="left:${cx}%;top:${cy}%">${i + 1}</span>`; }).join('');
+}
+function renderForm(){
+  const q = editing, hz = q.type.startsWith('hz-'), left = $('.ed-left'), top = left.scrollTop;
+  const typeSel = hz ? `<input class="in" value="${TYPES[q.type].n}" disabled>` : `<select class="in" id="edType">${['single','multiple','match','order','place','gap','essay','record'].map(k => `<option value="${k}" ${k === q.type ? 'selected' : ''}>${TYPES[k].n}</option>`).join('')}</select>`;
+  $('#edForm').innerHTML = `<div id="edIssues"></div>
+    <section class="card"><h3>Задание</h3><div class="grid2">${fld('Тип', typeSel, 'edType')}${fld('Баллы', `<input class="in" type="number" min="0" max="100" step="1" data-p="points" data-num value="${q.points}">`)}</div>
+      ${hz ? '' : fld('Формулировка для участника', `<textarea class="in" data-p="prompt" rows="2" placeholder="Например: Выберите правильный перевод слова">${h(q.prompt)}</textarea>`)}</section>
+    ${formBody(q)}
+    <section class="card"><h3>Оформление</h3><p class="note">Эти настройки приходят из окна участника: здесь те же варианты, что оно умеет показывать.</p><div class="tune-host" id="edTune">${PVS.tune || '<p class="note">Загрузка…</p>'}</div></section>
+    <section class="card"><h3>Проверка</h3>${MANUAL(q.type)
+      ? fld('Критерии для эксперта', `<textarea class="in" data-p="criteria" rows="3" placeholder="За что и сколько баллов ставить">${h(q.criteria)}</textarea>`) + '<p class="note">Ответ проверяет эксперт вручную и ставит от 0 до максимума баллов.</p>'
+      : `<p class="note">Проверяется автоматически по правильному ответу, заданному выше. ${q.type === 'gap' ? 'Для ввода текста регистр и пробелы по краям не учитываются.' : ''}</p>`}</section>`;
+  left.scrollTop = top; paintMeta();
+}
+function paintMeta(){
+  const q = editing; if(!q) return;
+  const n = course().qs.indexOf(q) + 1;
+  $('#edTitle').textContent = `Задание ${n} · ${TYPES[q.type].n}`;
+  $$('#edStatus button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === q.status)));
+  const is = issues(q), box = $('#edIssues');
+  if(box) box.innerHTML = is.length ? `<div class="issues"><ul>${is.map(x => `<li>${x}</li>`).join('')}</ul></div>` : '';
+  const f = $('#pvFit'); f.classList.toggle('bad', !PVS.fits);
+  f.textContent = !ASSETS ? 'Загрузка окна участника…' : PVS.fits ? 'Помещается в окно без прокрутки' : 'Не помещается: у участника появится прокрутка';
+}
+function openEditor(){ PVS.tune = ''; PVS.fits = true; renderForm(); sendPv(true); pvLayout(); }
+function changed(structural){
+  editing.mod = Date.now(); save();
+  if(structural) renderForm(); else paintMeta();
+  sendPv();
+}
+$('#edStatus').addEventListener('click', e => { const b = e.target.closest('button'); if(!b) return; editing.status = b.dataset.v; save(); paintMeta(); });
+
+const form = $('#edForm');
+form.addEventListener('input', e => {
+  const el = e.target, q = editing, p = el.dataset.p; if(!p) return;
+  if(el.hasAttribute('data-ok')){
+    if(q.type === 'single' && el.checked){ q.a.forEach(a => a.ok = false); $$('[data-ok]', form).forEach(x => x.checked = x === el); }
+    getP(q, p.replace(/\.ok$/, '')).ok = el.checked;
+  } else setP(q, p, el.hasAttribute('data-num') ? +el.value || 0 : el.value);
+  if(p === 'text'){ const gl = $('#gapList'); if(gl) gl.innerHTML = gapList(q); }
+  changed(false);
+});
+form.addEventListener('change', e => {
+  if(e.target.id !== 'edType') return;
+  const old = editing, n = blank(e.target.value), choice = t => t === 'single' || t === 'multiple';
+  if(choice(old.type) && choice(n.type)){ old.type = n.type; old.cfg.type = n.type; if(n.type === 'single'){ let seen = false; old.a.forEach(a => { a.ok = a.ok && !seen && (seen = true); }); } }
+  else { Object.keys(old).forEach(k => { if(!['id','prompt','points','status'].includes(k)) delete old[k]; }); Object.assign(old, n, {id:old.id, prompt:old.prompt, status:old.status, points:MANUAL(n.type) === MANUAL(old.type) ? old.points : n.points}); PVS.tune = ''; }
+  changed(true);
+});
+const NEW = {opt:() => A(0, ''), pair:() => ({l:{}, r:{}}), item:() => ({}), place:() => ({x:50, y:50, zn:0})};
+form.addEventListener('click', e => {
+  const tb = e.target.closest('#edTune button[data-v]');
+  if(tb){ if(!tb.disabled){ PVS.pendingForm = true; post({type:'oly:cfg', key:tb.parentNode.dataset.key, v:tb.dataset.v}); } return; }
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const q = editing, act = b.dataset.act, p = b.dataset.p, i = +b.dataset.i;
+  if(act === 'add') getP(q, p).push(NEW[b.dataset.kind]());
+  else if(act === 'del'){ getP(q, p).splice(i, 1); }
+  else if(act === 'mv'){ const l = getP(q, p), j = i + +b.dataset.d; [l[i], l[j]] = [l[j], l[i]]; }
+  else if(act === 'img') return pickImage(p, getP(q, p), p === 'qImg' && q.type === 'essay');
+  else if(act === 'aud') return pickFile('audio/*', f => { const url = URL.createObjectURL(f), a = new Audio(); const done = dur => { URL.revokeObjectURL(url); setP(q, p, {name:f.name, dur}); changed(true); };
+    a.onloadedmetadata = () => done(Math.max(1, Math.round(isFinite(a.duration) ? a.duration : 10))); a.onerror = () => done(10); a.src = url; });
+  else if(act === 'audDel') setP(q, p, null);
+  else if(act === 'scene') q.scene = b.dataset.v;
+  else if(act === 'sceneUp') return pickFile('image/png,image/jpeg,image/webp', f => readImage(f, (src, ratio) => { q.scene = {src, ratio}; changed(true); }));
+  else if(act === 'zAdd'){ const k = q.zones.length * 6 % 30; q.zones.push([[30 + k, 30 + k], [60 + k, 30 + k], [60 + k, 60 + k], [30 + k, 60 + k]]); }
+  else if(act === 'zDel'){ q.zones.pop(); q.items.forEach(it => { if(it.zn >= q.zones.length) it.zn = 0; }); }
+  else if(act === 'gapWrap'){ const t = $('#gapText'), a = t.selectionStart, z = t.selectionEnd; if(a === z){ t.focus(); return; } q.text = t.value.slice(0, a) + '{' + t.value.slice(a, z).replace(/[{}]/g, '') + '}' + t.value.slice(z); }
+  else return;
+  changed(true);
+});
+
+/* точки и зоны на сцене */
+let sd = null;
+const scPos = e => { const r = $('#sc').getBoundingClientRect(), c = v => Math.round(Math.min(100, Math.max(0, v)) * 10) / 10; return [c((e.clientX - r.left) / r.width * 100), c((e.clientY - r.top) / r.height * 100)]; };
+form.addEventListener('pointerdown', e => {
+  const sc = e.target.closest('#sc'); if(!sc) return;
+  const q = editing, pt = e.target.closest('.sc-pt'), v = e.target.closest('.sc-v'), m = e.target.closest('.sc-m');
+  if(pt) sd = {k:+pt.dataset.k};
+  else if(v) sd = {z:+v.dataset.z, v:+v.dataset.v};
+  else if(m){ const z = +m.dataset.z, j = +m.dataset.v + 1; q.zones[z].splice(j, 0, scPos(e)); sd = {z, v:j}; $('#scOv').innerHTML = scOverlay(q); }
+  else return;
+  e.preventDefault(); sc.setPointerCapture(e.pointerId);
+});
+form.addEventListener('pointermove', e => {
+  if(!sd) return; const q = editing, [x, y] = scPos(e);
+  if('k' in sd) Object.assign(q.items[sd.k], {x, y}); else q.zones[sd.z][sd.v] = [x, y];
+  $('#scOv').innerHTML = scOverlay(q); sendPv();
+});
+const scEnd = () => { if(!sd) return; sd = null; changed(false); };
+form.addEventListener('pointerup', scEnd); form.addEventListener('pointercancel', scEnd);
+form.addEventListener('dblclick', e => { const v = e.target.closest('.sc-v'); if(!v) return; const z = editing.zones[+v.dataset.z]; if(z.length > 3){ z.splice(+v.dataset.v, 1); $('#scOv').innerHTML = scOverlay(editing); changed(false); } });
+
+/* файлы и картинки */
+function pickFile(accept, cb){ const f = $('#filePick'); f.accept = accept; f.value = ''; f.onchange = () => f.files[0] && cb(f.files[0]); f.click(); }
+function readImage(file, cb){
+  const url = URL.createObjectURL(file), im = new Image();
+  im.onload = () => {
+    const k = Math.min(1, 1000 / Math.max(im.width, im.height)), cv = document.createElement('canvas');
+    cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k);
+    cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); URL.revokeObjectURL(url);
+    cb(cv.toDataURL(file.type === 'image/png' && file.size < 300000 ? 'image/png' : 'image/jpeg', .85), im.width / im.height);
+  };
+  im.onerror = () => URL.revokeObjectURL(url); im.src = url;
+}
+function pickImage(p, cur, scenes){
+  const ids = $$('#sprite symbol').map(s => s.id);
+  modal(`<div class="eyebrow">Картинка</div><h3>Выберите картинку</h3>
+    <div class="pics">${ids.map(id => `<button data-act="set" data-v="${id}" aria-label="${id}">${thumb(id)}</button>`).join('')}${scenes ? Object.keys(ASSETS.scenes).map(k => `<button data-act="set" data-v="scene:${k}" aria-label="Сцена">${thumb('scene:' + k)}</button>`).join('') : ''}</div>
+    <p class="note">Встроенные пиктограммы макета. Свою картинку (JPG, PNG) можно загрузить с компьютера: она уменьшается до 1000 px по длинной стороне.</p>
+    <div class="row">${cur ? '<button class="btn btn-line danger" data-act="none">Убрать картинку</button>' : ''}<button class="btn btn-line" data-act="no">Отмена</button><button class="btn btn-primary" data-act="up">Загрузить файл…</button></div>`, (a, el) => {
+      if(a === 'set'){ setP(editing, p, el.dataset.v); changed(true); }
+      else if(a === 'none'){ setP(editing, p, null); changed(true); }
+      else if(a === 'up') pickFile('image/png,image/jpeg,image/webp', f => readImage(f, src => { setP(editing, p, src); changed(true); }));
+    });
+}
+
+route();
+</script>
