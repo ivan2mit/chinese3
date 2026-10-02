@@ -124,7 +124,7 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
 .tools .in{max-width:320px}
 .filters{display:flex;gap:8px;flex-wrap:wrap}
 .qlist{display:flex;flex-direction:column;gap:8px}
-.qrow{display:grid;grid-template-columns:34px 178px minmax(0,1fr) 64px 104px auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px 10px 14px}
+.qrow{display:grid;grid-template-columns:34px 178px minmax(0,1fr) 112px 104px auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px 10px 14px}
 .qrow:hover{border-color:var(--muted)}
 .qrow .n{font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
 .qmain{min-width:0;text-align:left;border:0;background:transparent;padding:0}
@@ -181,6 +181,7 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
 .aud.on{border-color:var(--gold);background:var(--gold-tint);color:var(--gold-ink)}
 .aud span{overflow:hidden;text-overflow:ellipsis}
 .arrow{flex:none;color:var(--muted);font-weight:700}
+.rw>.in.pt{flex:none;width:68px;padding:0 6px;text-align:center}
 .note{font-size:12px;color:var(--muted);line-height:1.45;margin:0}
 .gapl{display:flex;flex-direction:column;gap:8px}
 .gapl .tag{flex:none;min-width:90px;max-width:150px;padding:4px 10px;border-radius:8px;background:var(--gold-tint);color:var(--gold-ink);font:600 15px var(--font-ui),var(--font-zh);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -221,6 +222,79 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
 .fit.bad{color:var(--red)}
 .pv-open{display:none}
 
+/* ---------- критерии ручной проверки (редактор) ---------- */
+.crit{display:flex;flex-direction:column;gap:6px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--bg)}
+.pill.bad{background:color-mix(in srgb,var(--red) 16%,transparent);color:var(--red)}
+.tab .cnt{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;margin-left:6px;border-radius:999px;background:var(--gold);color:var(--btn-ink);font-size:11px;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* ---------- проверка работ ---------- */
+.wrow{display:grid;grid-template-columns:86px 190px minmax(0,1fr) 128px 84px auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px 10px 14px}
+.wrow:hover{border-color:var(--muted)}
+.wrow .code{font:700 14px ui-monospace,SFMono-Regular,Menlo,monospace;white-space:nowrap}
+.rv{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start}
+.rv-main{display:flex;flex-direction:column;gap:14px;min-width:0}
+.rv-form{position:sticky;top:77px;max-height:calc(100dvh - 93px);overflow:auto}
+.rv-zh{font:500 24px/1.4 var(--font-zh)}
+.ans-text{font:500 20px/1.8 var(--font-ui),var(--font-zh);white-space:pre-wrap;overflow-wrap:anywhere;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.ans-files{display:flex;gap:12px;flex-wrap:wrap}
+.ans-files span{width:176px;height:132px;border-radius:10px;border:2px solid var(--line);background:var(--imgbg);overflow:hidden;display:block}
+.ans-files svg,.ans-files img{width:100%;height:100%;display:block;object-fit:cover}
+.rqs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:13px;font-weight:600}
+.rq{padding:2px 10px;border-radius:8px;font:500 17px/1.5 var(--font-zh);background:var(--sand)}
+.rq.ok{background:rgba(70,128,106,.18)}
+.rq.no{background:color-mix(in srgb,var(--red) 16%,transparent);text-decoration:line-through}
+.rplayer{display:flex;align-items:center;gap:14px;padding:10px 16px 10px 10px;border-radius:16px;background:var(--sand)}
+.rplayer .pb{flex:none;width:48px;height:48px;border-radius:50%;border:0;background:var(--solid);color:var(--on-solid);display:grid;place-items:center;font-size:16px;padding:0}
+.rplayer .trk{flex:1;height:8px;border-radius:4px;background:color-mix(in srgb,var(--ink) 18%,transparent);overflow:hidden;cursor:pointer}
+.rplayer .trk i{display:block;height:100%;width:0;background:var(--gold)}
+.rplayer .tm{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cr{border-top:1px solid var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.cr-h{display:flex;justify-content:space-between;gap:10px;font-weight:700}
+.cr-h .muted{font-weight:600;font-size:13px;white-space:nowrap}
+.cr .note{white-space:pre-wrap}
+.marks{display:flex;flex-wrap:wrap;gap:6px}
+.marks button{min-width:44px;height:40px;padding:0 8px;border-radius:10px;border:2px solid var(--line);background:var(--surface);font-weight:700;font-variant-numeric:tabular-nums}
+.marks button:hover{border-color:var(--muted)}
+.marks button[aria-pressed="true"]{background:var(--solid);color:var(--on-solid);border-color:var(--solid)}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:2px solid var(--line);padding-top:12px;font-weight:800;font-size:18px;font-variant-numeric:tabular-nums}
+
+/* ---------- результаты проверки ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat b{display:block;font-size:26px;font-weight:800;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;font-weight:600;color:var(--muted)}
+.pbar{height:6px;border-radius:3px;background:var(--sand);overflow:hidden;margin-top:8px}
+.pbar i{display:block;height:100%;background:var(--gold)}
+.ttable th small{display:block;font-weight:600;letter-spacing:0;text-transform:none}
+.ttable .numc{text-align:center;font-variant-numeric:tabular-nums}
+.rscroll{overflow:auto;max-height:calc(100dvh - 150px);border:1px solid var(--line);border-radius:12px}
+.rt{border-collapse:separate;border-spacing:0;font-size:13px;width:100%}
+.rt th,.rt td{padding:5px 4px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap;font-variant-numeric:tabular-nums;background:var(--surface)}
+.rt thead th{position:sticky;top:0;z-index:2;font-size:12px;font-weight:800;vertical-align:bottom;border-bottom:2px solid var(--line)}
+.rt th small{display:block;font-size:10px;font-weight:600;color:var(--muted)}
+.rt .man{background:color-mix(in srgb,var(--gold) 9%,var(--surface))}
+.rt .sum{font-weight:800;border-left:2px solid var(--line);padding-inline:10px}
+.rt .who{position:sticky;left:0;z-index:1;text-align:left;padding:5px 12px;border-right:2px solid var(--line);max-width:190px;overflow:hidden;text-overflow:ellipsis}
+.rt thead .who{z-index:3}
+.rt .who .mono{font:600 11px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted)}
+.rt tfoot td{font-weight:700;color:var(--muted);border-bottom:0;border-top:1px solid var(--line);font-size:12px}
+.rt tfoot tr:first-child td{border-top:2px solid var(--line)}
+.sc-b{min-width:32px;height:28px;padding:0 5px;border-radius:8px;border:1px solid transparent;background:transparent;font-weight:700;font-size:13px;font-variant-numeric:tabular-nums}
+.sc-b:hover{border-color:var(--ink)}
+.sc-b.f{background:rgba(70,128,106,.2)}
+.sc-b.p{background:var(--gold-tint)}
+.sc-b.z{background:color-mix(in srgb,var(--red) 16%,transparent)}
+.sc-b.s,.sc-b.new{color:var(--muted);border:1px dashed var(--muted)}
+.sc-b.part{border:2px solid var(--gold)}
+.sc-b.redo{border:2px solid var(--red);color:var(--red)}
+.lg{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--muted);font-weight:600;align-items:center}
+.lg .sc-b{pointer-events:none;height:22px;min-width:26px;font-size:12px;margin-right:4px;color:var(--ink)}
+.cavg{display:grid;grid-template-columns:minmax(0,1fr) minmax(80px,200px) 92px;gap:12px;align-items:center;font-size:14px}
+.cavg .pbar{margin:0}
+.cavg span:last-child{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;margin:0;font-size:14px}
+.dl dd{margin:0;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+
 /* модалка */
 .backdrop{position:fixed;inset:0;z-index:60;background:rgba(10,14,45,.55);display:grid;place-items:center;padding:16px}
 .modal{background:var(--surface);border-radius:20px;max-width:560px;width:100%;max-height:calc(100dvh - 32px);overflow:auto;padding:24px;display:flex;flex-direction:column;gap:16px;box-shadow:0 24px 64px rgba(0,0,0,.35)}
@@ -240,7 +314,8 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
   .ed{grid-template-columns:minmax(0,1fr)}
   .pv:not(.full){display:none}
   .pv-open{display:inline-flex}
-  .tgrid{grid-template-columns:minmax(0,1fr)}
+  .tgrid,.rv{grid-template-columns:minmax(0,1fr)}
+  .rv-form{position:static;max-height:none}
 }
 @media (max-width:760px){
   .auth{grid-template-columns:minmax(0,1fr)}
@@ -249,6 +324,11 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
   .qrow .qmain{grid-column:2/-1;grid-row:2}
   .qrow .pts{display:none}
   .qrow .qacts{grid-column:1/-1;justify-content:flex-end}
+  .wrow{grid-template-columns:auto minmax(0,1fr) auto;row-gap:6px}
+  .wrow .qmain{grid-column:1/-1;grid-row:2}
+  .wrow .pts{display:none}
+  .wrow .qacts{grid-column:1/-1;justify-content:flex-end}
+  .cavg{grid-template-columns:minmax(0,1fr) 92px}.cavg .pbar{display:none}
   .logo div,.who>div,.crs{display:none}
   .grid2,.row2,.types{grid-template-columns:minmax(0,1fr)}
   .it{flex-wrap:wrap}
@@ -263,6 +343,24 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
   .tk dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:6px 0 0}
   .tk dt{color:#555}.tk dd{margin:0;font:700 15px ui-monospace,Menlo,monospace}
 }
+/* редактор текста вопроса: начертание, размер, цвет, выравнивание */
+.rte{border:2px solid var(--line);border-radius:10px;background:var(--surface);overflow:hidden;min-width:0}
+.rte:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-tint)}
+.rte-bar{display:flex;gap:2px;flex-wrap:wrap;align-items:center;padding:5px 6px;border-bottom:1px solid var(--line);background:var(--bg)}
+.rte-bar button{min-width:30px;height:28px;border-radius:6px;border:1px solid transparent;background:transparent;font-size:12px;font-weight:700;padding:0 7px;white-space:nowrap}
+.rte-bar button:hover{border-color:var(--line);background:var(--surface)}
+.rte-bar button[aria-pressed="true"]{background:var(--solid);color:var(--on-solid)}
+.rte-bar .sep{width:1px;height:18px;background:var(--line);margin:0 4px}
+.rte-bar .sw{min-width:28px;padding:0}
+.rte-bar .ic{padding:0;display:grid;place-items:center}
+.rte-bar .ic svg{width:16px;height:16px;display:block}
+.rte-bar .sw::before{content:"";display:block;width:14px;height:14px;border-radius:50%;background:var(--sw);margin:auto}
+.rte-ed{min-height:44px;padding:9px 12px;outline:none;font-weight:500;font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.rte-ed.zh{font-family:var(--font-ui),var(--font-zh);font-size:18px;font-weight:500}
+.rte-ed.mini{min-height:40px;padding:7px 12px;font-size:15px;font-weight:500;line-height:1.45}
+.rte-ed.mini b{font-weight:800}
+.rte-bar.float{position:fixed;z-index:30;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);background:var(--surface);flex-wrap:nowrap}
+.rte-ed:empty::before{content:attr(data-ph);color:var(--muted);font-weight:500}
 </style>
 
 <div id="sprite"></div>
@@ -276,7 +374,7 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
     <div style="display:flex;flex-direction:column;gap:16px">
       <div class="zh-mark">汉语 · 奥林匹克</div>
       <h1>Олимпиада по китайскому языку</h1>
-      <p>Кабинет педагога: задания, оформление окна участника и доступы для участников.</p>
+      <p>Кабинет педагога: задания, оформление окна участника, доступы для участников и проверка работ.</p>
     </div>
     <div class="band" id="band"></div>
   </aside>
@@ -304,6 +402,8 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
       <button class="tab" data-go="courses">Курсы</button>
       <button class="tab" data-go="bank">Банк заданий</button>
       <button class="tab" data-go="tickets">Тикеты участников</button>
+      <button class="tab" data-go="review">Проверка работ<span class="cnt" id="rvCnt" hidden></span></button>
+      <button class="tab" data-go="results">Результаты</button>
     </nav>
     <span class="crs" id="crs" hidden></span>
     <div class="who">
@@ -316,6 +416,8 @@ textarea.in{padding:10px 12px;line-height:1.5;resize:vertical;min-height:64px}
   <main class="wrap page" id="s-courses" hidden></main>
   <main class="wrap page" id="s-bank" hidden></main>
   <main class="wrap page" id="s-tickets" hidden></main>
+  <main class="wrap page" id="s-review" hidden></main>
+  <main class="wrap page" id="s-results" hidden></main>
 
   <main class="ed" id="s-edit" hidden>
     <div class="ed-left">
@@ -394,8 +496,8 @@ function blank(type){
   if(type === 'order') Object.assign(q, {items:[{},{},{}], hint:'', cfg:{ov:'list'}});
   if(type === 'place') Object.assign(q, {scene:'room', poolTitle:'Слова', items:[{x:30,y:40,zn:0},{x:60,y:55,zn:0}], zones:[[[10,15],[45,15],[45,60],[10,60]]]});
   if(type === 'gap') Object.assign(q, {text:'', gaps:[], extra:[], hint:''});
-  if(type === 'essay') Object.assign(q, {zh:'', py:'', req:'', criteria:''});
-  if(type === 'record') Object.assign(q, {zh:'', py:'', hint:'', criteria:''});
+  if(type === 'essay') Object.assign(q, {zh:'', py:'', req:'', crit:DEF_CRIT.essay()});
+  if(type === 'record') Object.assign(q, {zh:'', py:'', hint:'', crit:DEF_CRIT.record()});
   return q;
 }
 function seedQs(){
@@ -420,23 +522,79 @@ function seedQs(){
     {type:'gap', prompt:'Впишите пропущенные слова в диалог', cfg:{gm:'input'}, text:'A：你叫什么{名字}？\nB：我{叫}李明。你{呢}？', gaps:[{s:'míngzi',hint:'имя'},{s:'jiào',hint:'зовут'},{s:'ne',hint:'частица'}], extra:[I('吗','ma')], hint:''},
     {type:'gap', prompt:'Перенесите слова в пропуски', cfg:{gm:'bank'}, hint:'Я каждый день пью чашку чая. Он любит читать книги.', text:'我每天{喝}一杯{茶}。\n他喜欢{看}书。', gaps:[{s:'hē'},{s:'chá'},{s:'kàn'}], extra:[I('买','mǎi')]},
     {type:'gap', prompt:'Вставьте картинки в пропуски', cfg:{gm:'bank'}, hint:'На столе есть яблоко и книга.', text:'桌子上有{яблоко}和{книга}。', gaps:[{img:'p-apple'},{img:'p-book'}], extra:[I('','','p-cup'),I('','','p-clock')]},
-    {type:'essay', prompt:'Напишите связный текст по теме', zh:'请介绍一下你的一天。', py:'Qǐng jièshào yíxià nǐ de yìtiān.', req:'每天, 起床, 上学, 吃饭', cfg:{em:'both', lim:'500'}, criteria:'Содержание — 2 балла, грамматика — 2 балла, использованы все слова — 1 балл.'},
-    {type:'essay', prompt:'Опишите, что вы видите на картинке', zh:'', py:'', qImg:'scene:room', req:'床, 桌子, 灯, 窗户', cfg:{em:'text', lim:'200'}, criteria:''},
+    {type:'essay', prompt:'Напишите связный текст по теме', zh:'请介绍一下你的一天。', py:'Qǐng jièshào yíxià nǐ de yìtiān.', req:'每天, 起床, 上学, 吃饭', cfg:{em:'both', lim:'500'}, crit:DEF_CRIT.essay()},
+    {type:'essay', prompt:'Опишите, что вы видите на картинке', zh:'', py:'', qImg:'scene:room', req:'床, 桌子, 灯, 窗户', cfg:{em:'text', lim:'200'}, cstep:.5, crit:[C('Описание картинки', 3, '3 — названы все предметы и их расположение\n1,5 — названа часть предметов\n0 — описания нет'), C('Грамматика', 2, '2 — без ошибок\n1 — ошибки не мешают пониманию\n0 — смысл непонятен')]},
     {type:'single', prompt:'Прослушайте запись и выберите правильный ответ. Где находятся говорящие?', zh:'', py:'', qa:DEMO_AU(14), cfg:{cols:2, plays:'2'}, a:[A(1,'В кафе'),A(0,'В школе'),A(0,'Дома'),A(0,'В магазине')]},
     {type:'single', prompt:'Выберите запись, которая соответствует фразе', zh:'我喜欢喝茶。', py:'Wǒ xǐhuān hē chá.', cfg:{cols:1, plays:'1'}, a:[A(1,'','','',4),A(0,'','','',5),A(0,'','','',4)]},
-    {type:'record', prompt:'Прочитайте предложение вслух', zh:'我每天早上七点起床，然后喝一杯茶。', py:'Wǒ měitiān zǎoshang qī diǎn qǐchuáng, ránhòu hē yì bēi chá.', hint:'Я каждый день встаю в семь утра, а потом пью чашку чая.', cfg:{rd:'60', rt:'3'}, criteria:'Тоны — 2 балла, беглость — 2 балла, полнота — 1 балл.'},
+    {type:'record', prompt:'Прочитайте предложение вслух', zh:'我每天早上七点起床，然后喝一杯茶。', py:'Wǒ měitiān zǎoshang qī diǎn qǐchuáng, ránhòu hē yì bēi chá.', hint:'Я каждый день встаю в семь утра, а потом пью чашку чая.', cfg:{rd:'60', rt:'3'}, crit:DEF_CRIT.record()},
     {type:'record', prompt:'Прослушайте вопрос и ответьте на него устно', zh:'', py:'', hint:'', qa:DEMO_AU(8), cfg:{rd:'30', rt:'1', plays:'2'}, criteria:''},
     ...['hz-strokes','hz-keys','hz-order','hz-strokes','hz-keys','hz-order'].map((type, hzRef) => ({type, hzRef, prompt:''}))
   ].map((q, i) => ({id:uid(), points:MANUAL(q.type) ? 5 : 1, status:'ready', mod:Date.now() - (30 - i) * 36e5, ...q}));
 }
 function seed(){
-  return {courses:[
+  const db = {courses:[
     {id:'yct1', title:'YCT 1', sub:'Начальный уровень: базовые слова и фразы', zh:'一级', c:'#E6A046', qs:seedQs().slice(0, 6), tickets:[]},
     {id:'yct2', title:'YCT 2', sub:'Базовый уровень: простые предложения', zh:'二级', c:'#436986', qs:seedQs(), tickets:[
-      {id:uid(), name:'Ли Мин', login:'SR-2041', pass:mkPass(), st:'in'}, {id:uid(), name:'Соня Ким', login:'SR-2042', pass:mkPass(), st:'new'}, {id:uid(), name:'Артём Белов', login:'SR-2043', pass:mkPass(), st:'new'}]},
+      ...DEMO_NAMES.map((name, i) => ({id:uid(), name, login:'SR-' + (2041 + i), pass:mkPass(), st:'in'}))]},
     {id:'yct3', title:'YCT 3', sub:'Средний уровень: расширенный словарный запас', zh:'三级', c:'#46806A', qs:[], tickets:[]},
     {id:'yct4', title:'YCT 4', sub:'Продвинутый уровень: сложные конструкции', zh:'四级', c:'#A1432C', qs:[], tickets:[]}
   ], cur:null};
+  demoWorks(db.courses[1], true);
+  return db;
+}
+
+/* ---------- критерии ручной проверки и работы участников ---------- */
+/* Критерий: {id, name, desc, max}. Балл за задание с ручной проверкой — сумма максимумов критериев; q.cstep — шаг оценки (1 или 0.5). */
+const C = (name, max, desc) => ({id:uid(), name, max, desc:desc || ''});
+const DEF_CRIT = {
+  essay:() => [C('Содержание', 2, '2 — тема раскрыта полностью\n1 — тема раскрыта частично\n0 — ответ не по теме или его нет'), C('Грамматика и лексика', 2, '2 — не больше одной ошибки\n1 — две-три ошибки, смысл понятен\n0 — ошибки мешают пониманию'), C('Требуемые слова', 1, '1 — использованы все слова из задания\n0 — использованы не все')],
+  record:() => [C('Произношение и тоны', 2, '2 — тоны и звуки верные\n1 — отдельные ошибки в тонах\n0 — речь трудно понять'), C('Беглость', 2, '2 — без долгих пауз\n1 — есть паузы и повторы\n0 — ответ по слогам или оборван'), C('Полнота ответа', 1, '1 — ответ полный\n0 — ответ неполный или его нет')]
+};
+function critOf(q){
+  if(!MANUAL(q.type)) return [];
+  if(!q.crit){   /* старый формат: критерии одной строкой «Содержание — 2 балла, …» */
+    const found = [...String(q.criteria || '').matchAll(/([^,.;:—–]+?)\s*[—–]\s*(\d+(?:[.,]\d+)?)\s*балл/g)].map(m => { const n = m[1].trim(); return C(n[0].toUpperCase() + n.slice(1), +m[2].replace(',', '.')); });
+    q.crit = found.length ? found : q.criteria ? [C('Общая оценка', q.points || 5, q.criteria)] : DEF_CRIT[q.type]();
+    delete q.criteria;
+  }
+  return q.crit;
+}
+const critMax = q => Math.round(critOf(q).reduce((s, k) => s + (+k.max || 0), 0) * 100) / 100;
+const markVals = (q, k) => { const st = q.cstep === .5 ? .5 : 1, out = []; for(let v = 0; v < k.max; v += st) out.push(v); out.push(+k.max || 0); return out; };
+/* Работа: {id, tid (тикет), qid (задание), at, text | files | dur, marks:{idКритерия:балл}, note, done, by, gat}. В продукте работы приходят из Moodle. */
+const manualQs = c => c.qs.filter(q => MANUAL(q.type));
+const works = c => c.works || (c.works = []);
+const liveWorks = c => works(c).filter(w => c.qs.some(q => q.id === w.qid && MANUAL(q.type)) && c.tickets.some(t => t.id === w.tid));
+const hasMark = (w, k) => typeof w.marks[k.id] === 'number' && w.marks[k.id] >= 0 && w.marks[k.id] <= k.max;
+const wSum = (w, q) => Math.round(critOf(q).reduce((s, k) => s + (hasMark(w, k) ? w.marks[k.id] : 0), 0) * 100) / 100;
+function wState(w, q){   /* redo — работа была проверена, но критерии с тех пор изменились */
+  const cr = critOf(q), n = cr.filter(k => hasMark(w, k)).length;
+  return w.done ? (cr.length && n === cr.length ? 'done' : 'redo') : n ? 'part' : 'new';
+}
+const WST = {new:['Ждёт проверки',''], part:['Начата','draft'], done:['Проверена','ok'], redo:['Перепроверить','bad']};
+const ME = 'Анна Ван';
+const DEMO_NAMES = ['Ли Мин','Соня Ким','Артём Белов','Мария Орлова','Тимур Гасанов','Ева Чжан','Лев Соколов','Алиса Петрова'];
+const DEMO_TXT = {
+  day:['我每天早上七点起床。起床以后我吃饭，然后去上学。我在学校学习汉语和数学。下午四点我回家，晚上我看书。我的一天很忙，但是我很高兴。',
+    '我每天六点半起床。我吃早饭，喝牛奶。八点我上学。中午我在学校吃饭。',
+    '每天我七点起床，上学我去八点。在学校我有很多朋友。我们一起吃饭，一起学习。晚上我做作业，十点睡觉。',
+    '我起床。我上学。我吃饭。', ''],
+  pic:['房间里有一张床和一张桌子。桌子上有一个灯。窗户很大，房间很漂亮。', '这是我的房间。床在左边，桌子在右边。灯在桌子上。', '有床。有桌子。有灯。', '房间里有床、桌子、灯和窗户。窗户旁边有书架，书架上有很多书。我喜欢这个房间。', '']
+};
+function demoWorks(c, grade){
+  if(!c.tickets.length) DEMO_NAMES.slice(0, 6).forEach((name, i) => c.tickets.push({id:uid(), name, login:'SR-' + (3001 + i), pass:mkPass(), st:'in'}));
+  const W = works(c);
+  c.tickets.forEach((t, ti) => manualQs(c).forEach((q, qi) => {
+    if(W.some(w => w.tid === t.id && w.qid === q.id)) return;
+    const k = ti * 7 + qi * 3, w = {id:uid(), tid:t.id, qid:q.id, at:Date.now() - (k % 9 + 1) * 36e5, marks:{}, note:''};
+    if(q.type === 'record') w.dur = 6 + k * 5 % 20;
+    else { const em = q.cfg.em || 'text', set = DEMO_TXT[q.qImg ? 'pic' : 'day'];
+      if(em !== 'image') w.text = set[(ti + qi) % set.length];
+      if(em === 'image' || (em === 'both' && ti % 3 === 0)) w.files = ['p-book', 'p-cup'].slice(0, 1 + ti % 2); }
+    if(grade && k % 3){ critOf(q).forEach((cr, j) => { const v = markVals(q, cr); if(k % 5 !== 1 || j === 0) w.marks[cr.id] = v[Math.max(0, v.length - 1 - (ti + j) % v.length)]; });
+      if(k % 5 !== 1) Object.assign(w, {done:true, by:ME, gat:w.at + 18e5}); }
+    W.push(w);
+  }));
 }
 
 /* ---------- хранение (макет: localStorage; в продукте — Moodle) ---------- */
@@ -486,11 +644,12 @@ function route(){
   if(name !== 'courses' && !course()) name = 'courses';
   if(name === 'edit'){ editing = course().qs.find(q => q.id === arg) || null; if(!editing) name = 'bank'; }
   $('#s-auth').hidden = name !== 'auth'; $('#app').hidden = name === 'auth';
-  ['courses','bank','tickets','edit'].forEach(n => $('#s-' + n).hidden = n !== name);
+  ['courses','bank','tickets','review','results','edit'].forEach(n => $('#s-' + n).hidden = n !== name);
   $$('#tabs .tab').forEach(b => { b.setAttribute('aria-current', String(b.dataset.go === name || (name === 'edit' && b.dataset.go === 'bank'))); b.disabled = b.dataset.go !== 'courses' && !course(); });
   const c = course(); $('#crs').hidden = !c; if(c) $('#crs').textContent = 'Курс: ' + c.title;
   if(name !== 'edit') pvSetFull(false);
-  ({courses:paintCourses, bank:paintBank, tickets:paintTickets, edit:openEditor}[name] || (() => {}))();
+  rpStop(); paintCnt();
+  ({courses:paintCourses, bank:paintBank, tickets:paintTickets, edit:openEditor, review:() => paintReview(arg), results:paintResults}[name] || (() => {}))();
   if(name !== 'edit') scrollTo(0, 0);
 }
 addEventListener('hashchange', route);
@@ -526,10 +685,10 @@ $('#s-courses').addEventListener('click', e => {
 const BF = {g:'all', q:''};
 function snippet(q){
   const its = q.a || q.items || (q.pairs && q.pairs.map(p => p.l)) || [];
-  const parts = [q.zh, q.type === 'gap' ? q.text.replace(/\n/g, ' ') : '', its.map(i => i.t).filter(Boolean).join(' · '), q.qa ? '♪ аудио' : ''].filter(Boolean);
+  const parts = [plain(q.zh), q.type === 'gap' ? q.text.replace(/\n/g, ' ') : '', its.map(i => plain(i.t)).filter(Boolean).join(' · '), q.qa ? '♪ аудио' : ''].filter(Boolean);
   return q.type.startsWith('hz-') ? 'Из редактора заданий по иероглифам' : parts.join('  —  ') || 'Без содержимого';
 }
-const promptOf = q => q.prompt || (q.type.startsWith('hz-') && ASSETS && ASSETS.hz[q.hzRef] ? ASSETS.hz[q.hzRef].prompt : '');
+const promptOf = q => plain(q.prompt) || (q.type.startsWith('hz-') && ASSETS && ASSETS.hz[q.hzRef] ? ASSETS.hz[q.hzRef].prompt : '');
 function paintBank(){
   const c = course(), list = c.qs.map((q, i) => [q, i]).filter(([q]) => (BF.g === 'all' || groupOf(q.type) === BF.g) && (!BF.q || (promptOf(q) + ' ' + snippet(q)).toLowerCase().includes(BF.q.toLowerCase())));
   $('#s-bank').innerHTML = `<div class="head"><div><div class="eyebrow">${h(c.title)} · ${h(c.sub)}</div><h1>Банк заданий</h1>
@@ -540,7 +699,7 @@ function paintBank(){
     <div class="qlist" id="qlist">${list.map(([q, i]) => { const bad = issues(q).length;
       return `<article class="qrow"><span class="n">${i + 1}</span><span><span class="pill type">${TYPES[q.type].n}</span></span>
         <button class="qmain" data-edit="${q.id}"><b>${h(promptOf(q)) || '<span class="muted" style="display:inline">Без формулировки</span>'}</b><span>${h(snippet(q))}</span></button>
-        <span class="pts">${q.points} ${MANUAL(q.type) ? 'б. · эксперт' : 'б.'}</span>
+        <span class="pts">${maxPts(q)} ${MANUAL(q.type) ? 'б. · эксперт' : byStep(q) ? 'б. · по шагам' : 'б.'}</span>
         <span><span class="pill ${q.status === 'ready' ? 'ok' : 'draft'}">${q.status === 'ready' ? 'Готово' : 'Черновик'}</span>${bad ? ` <span class="warn-dot" title="Есть замечания: ${bad}">!</span>` : ''}</span>
         <span class="qacts"><button class="btn btn-line sm" data-edit="${q.id}">Изменить</button><button class="x" data-dup="${q.id}" title="Дублировать" aria-label="Дублировать">⧉</button><button class="x" data-del="${q.id}" title="Удалить" aria-label="Удалить">✕</button></span></article>`; }).join('')
       || `<div class="empty"><b>${c.qs.length ? 'Ничего не найдено' : 'В этом курсе пока нет заданий'}</b>${c.qs.length ? 'Измените поиск или фильтр.' : 'Создайте первое задание: тип выбирается на следующем шаге.'}</div>`}</div>`;
@@ -619,11 +778,242 @@ $('#s-tickets').addEventListener('click', e => {
   }
 });
 
+/* ---------- проверка работ: очередь и оценка по критериям ---------- */
+const RF = {q:'all', st:'todo'}, RV = {w:null};
+const qNo = (c, q) => c.qs.indexOf(q) + 1;
+const tkOf = (c, w) => c.tickets.find(t => t.id === w.tid);
+const qOf = (c, w) => c.qs.find(q => q.id === w.qid);
+const fmtD = t => new Date(t).toLocaleString('ru-RU', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+const num = v => String(v).replace('.', ',');
+const wEmpty = w => !w.text && !(w.files && w.files.length) && !w.dur;
+const wPreview = w => wEmpty(w) ? 'Нет ответа' : w.dur ? `♪ запись ${fmtT(w.dur)}` : (w.text ? w.text.slice(0, 70) : '') + (w.files && w.files.length ? `${w.text ? ' · ' : ''}картинок: ${w.files.length}` : '');
+function rvList(c, st = RF.st){   /* порядок очереди: по заданиям, внутри задания по коду участника */
+  return liveWorks(c).map(w => { const q = qOf(c, w); return {w, q, st:wState(w, q)}; })
+    .filter(x => (RF.q === 'all' || x.q.id === RF.q) && (st === 'all' || (st === 'done') === (x.st === 'done')))
+    .sort((a, b) => qNo(c, a.q) - qNo(c, b.q) || tkOf(c, a.w).login.localeCompare(tkOf(c, b.w).login));
+}
+function paintCnt(){
+  const c = course(), n = c ? liveWorks(c).filter(w => wState(w, qOf(c, w)) !== 'done').length : 0, el = $('#rvCnt');
+  el.hidden = !n; el.textContent = n;
+}
+function paintReview(arg){
+  const c = course(), box = $('#s-review'), W = liveWorks(c), qs = manualQs(c);
+  const w = arg && W.find(x => x.id === arg);
+  if(w) return paintWork(c, w);
+  RV.w = null;
+  if(RF.q !== 'all' && !qs.some(q => q.id === RF.q)) RF.q = 'all';
+  const todo = W.filter(x => wState(x, qOf(c, x)) !== 'done').length, list = rvList(c), first = rvList(c, 'todo')[0];
+  box.innerHTML = `<div class="head"><div><div class="eyebrow">${h(c.title)} · ${h(c.sub)}</div><h1>Проверка работ</h1>
+      <p>Ответы на задания с развёрнутым ответом и с записью голоса оценивает эксперт по критериям составителя. Работы обезличены: вместо имени показан код участника.</p></div>
+      <button class="btn btn-primary" id="rvStart" ${first ? `data-w="${first.w.id}"` : 'disabled'}>Начать проверку</button></div>
+    ${!qs.length ? `<div class="empty"><b>В курсе нет заданий с ручной проверкой</b>Добавьте в банк задание типа «Развёрнутый ответ» или «Запись голоса» и задайте критерии.</div>`
+    : !W.length ? `<div class="empty"><b>Работ пока нет</b>В продукте ответы приходят из Moodle после завершения теста. Для макета можно создать примеры ответов.<div style="margin-top:14px"><button class="btn btn-line" id="rvDemo">Добавить демо-работы</button></div></div>`
+    : `<div class="tools"><div class="filters">${[['todo', `Ждут проверки · ${todo}`], ['done', `Проверены · ${W.length - todo}`], ['all', `Все · ${W.length}`]].map(([k, n]) => `<button class="chip" aria-pressed="${RF.st === k}" data-st="${k}">${n}</button>`).join('')}</div>
+        <div class="filters">${[['all', 'Все задания'], ...qs.map(q => [q.id, `№ ${qNo(c, q)} · ${TYPES[q.type].n}`])].map(([k, n]) => `<button class="chip" aria-pressed="${RF.q === k}" data-q="${k}">${n}</button>`).join('')}</div></div>
+      <div class="qlist">${list.map(({w, q, st}) => `<article class="wrow"><span class="code">${h(tkOf(c, w).login)}</span><span><span class="pill type">№ ${qNo(c, q)} · ${TYPES[q.type].n}</span></span>
+        <button class="qmain" data-w="${w.id}"><b>${h(promptOf(q)) || 'Без формулировки'}</b><span>${h(wPreview(w))}</span></button>
+        <span><span class="pill ${WST[st][1]}">${WST[st][0]}</span></span>
+        <span class="pts">${st === 'new' ? '—' : num(wSum(w, q))} / ${num(critMax(q))} б.</span>
+        <span class="qacts"><button class="btn ${st === 'done' ? 'btn-line' : 'btn-primary'} sm" data-w="${w.id}">${st === 'done' ? 'Открыть' : 'Проверить'}</button></span></article>`).join('')
+        || `<div class="empty"><b>${RF.st === 'todo' ? 'Всё проверено' : 'Ничего не найдено'}</b>${RF.st === 'todo' ? 'Итоги смотрите в разделе «Результаты».' : 'Измените фильтр.'}</div>`}</div>`}`;
+}
+function paintWork(c, w){
+  RV.w = w;
+  const q = qOf(c, w), all = rvList(c, 'all'), at = all.findIndex(x => x.w === w), prev = all[at - 1], next = all[at + 1];
+  const req = q.req ? q.req.split(/[,，、]/).map(s => s.trim()).filter(Boolean) : [], len = [...(w.text || '')].length, lim = +q.cfg.lim || 0;
+  $('#s-review').innerHTML = `<div class="head"><div><div class="eyebrow">Проверка работ · ${at + 1} из ${all.length}</div><h1>Задание ${qNo(c, q)} · код ${h(tkOf(c, w).login)}</h1></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-line" data-go="review">← К списку</button><button class="btn btn-line" ${prev ? `data-w="${prev.w.id}"` : 'disabled'}>Предыдущая</button><button class="btn btn-line" ${next ? `data-w="${next.w.id}"` : 'disabled'}>Следующая</button></div></div>
+    <div class="rv"><div class="rv-main">
+      <section class="card"><div><span class="pill type">${TYPES[q.type].n}</span></div><p><b>${h(plain(q.prompt)) || 'Без формулировки'}</b></p>
+        ${q.zh ? `<div><div class="rv-zh">${h(plain(q.zh))}</div>${q.py ? `<div class="hint">${h(q.py)}</div>` : ''}</div>` : ''}
+        ${q.hint ? `<p class="hint">${h(q.hint)}</p>` : ''}
+        ${q.qImg ? `<div class="ans-files"><span>${thumb(q.qImg)}</span></div>` : ''}
+        ${q.qa ? `<p class="note">В вопросе звучит запись: ${h(q.qa.name)}, ${fmtT(q.qa.dur)}.</p>` : ''}</section>
+      <section class="card"><h3>Ответ участника</h3>
+        ${wEmpty(w) ? '<div class="empty"><b>Участник не дал ответа</b>Поставьте 0 по всем критериям.</div>' : ''}
+        ${w.text ? `<div class="ans-text">${h(w.text)}</div><p class="note">Знаков: ${len}${lim ? ` из ${lim}` : ''}.</p>` : ''}
+        ${w.text && req.length ? `<div class="rqs"><span class="muted">Требуемые слова:</span>${req.map(r => `<span class="rq ${w.text.includes(r) ? 'ok' : 'no'}" title="${w.text.includes(r) ? 'Есть в ответе' : 'Нет в ответе'}">${h(r)}</span>`).join('')}</div>` : ''}
+        ${w.files && w.files.length ? `<div class="ans-files">${w.files.map(f => `<span>${thumb(f)}</span>`).join('')}</div>` : ''}
+        ${w.dur ? `<div class="rplayer" id="rp" data-dur="${w.dur}"><button type="button" class="pb" id="rpBtn" aria-label="Слушать">▶</button><div class="trk" id="rpTrk"><i></i></div><span class="tm">0:00 / ${fmtT(w.dur)}</span></div>
+          <p class="note">Проверяющий слушает запись без ограничений. В макете проигрывание имитируется. Лимит записи у участника: ${q.cfg.rd || 60} с, попыток: ${q.cfg.rt || 1}.</p>` : ''}
+        <p class="note">Ответ сдан ${fmtD(w.at)}.</p></section></div>
+      <aside class="card rv-form" id="rvForm"></aside></div>`;
+  paintMarks();
+}
+function rvNext(c, w){ const all = rvList(c, 'all'), at = all.findIndex(x => x.w === w); return [...all.slice(at + 1), ...all.slice(0, at)].find(x => x.st !== 'done'); }
+function paintMarks(){
+  const c = course(), w = RV.w, q = qOf(c, w), cr = critOf(q), st = wState(w, q), left = cr.filter(k => !hasMark(w, k)).length, note = $('#rvNote');
+  if(note) w.note = note.value;
+  $('#rvForm').innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3 style="font-size:16px;font-weight:800">Оценка по критериям</h3><span class="pill ${WST[st][1]}">${WST[st][0]}</span></div>
+    ${st === 'redo' ? '<div class="issues">Критерии задания изменились после проверки. Поставьте баллы заново там, где их нет.</div>' : ''}
+    ${cr.map(k => `<div class="cr"><div class="cr-h"><span>${h(k.name) || 'Критерий без названия'}</span><span class="muted">до ${num(k.max)} б.</span></div>${k.desc ? `<p class="note">${h(k.desc)}</p>` : ''}
+      <div class="marks" role="group" aria-label="Балл по критерию">${markVals(q, k).map(v => `<button type="button" data-k="${k.id}" data-v="${v}" aria-pressed="${hasMark(w, k) && w.marks[k.id] === v}">${num(v)}</button>`).join('')}</div></div>`).join('')}
+    <div class="total"><span>Итого</span><span>${left === cr.length ? '—' : num(wSum(w, q))} / ${num(critMax(q))} б.</span></div>
+    ${fld('Комментарий проверяющего', `<textarea class="in" id="rvNote" rows="2" placeholder="Необязательно: что повлияло на оценку">${h(w.note)}</textarea>`, 'rvNote')}
+    <button class="btn btn-primary" id="rvDone" ${left ? 'disabled' : ''}>${st === 'done' ? 'Сохранить' : 'Завершить проверку'}${rvNext(c, w) ? ' и к следующей' : ''}</button>
+    <button class="btn btn-quiet sm" id="rvZero">Поставить 0 по всем критериям</button>
+    <p class="note">${left ? `Осталось критериев без балла: ${left}. Балл нельзя поставить выше максимума критерия.` : w.done ? `Проверено: ${h(w.by)}, ${fmtD(w.gat)}.` : 'Все критерии оценены. Завершите проверку, чтобы работа попала в результаты.'}</p>`;
+}
+/* имитация проигрывания записи участника */
+let rp = null;
+function rpStop(){ if(rp){ clearInterval(rp.t); rp = null; } }
+function rpPaint(){ const el = $('#rp'); if(!el || !rp) return; $('i', el).style.width = rp.pos / rp.dur * 100 + '%'; $('.tm', el).textContent = `${fmtT(rp.pos)} / ${fmtT(rp.dur)}`; $('#rpBtn').textContent = rp.on ? '❚❚' : '▶'; }
+function rpToggle(seek){
+  const el = $('#rp'); if(!rp) rp = {dur:+el.dataset.dur, pos:0, on:false, t:0};
+  if(seek != null) rp.pos = seek * rp.dur; else { rp.on = !rp.on; if(rp.on && rp.pos >= rp.dur) rp.pos = 0; }
+  clearInterval(rp.t);
+  if(rp.on) rp.t = setInterval(() => { rp.pos = Math.min(rp.dur, rp.pos + .1); if(rp.pos >= rp.dur){ rp.on = false; clearInterval(rp.t); } rpPaint(); }, 100);
+  rpPaint();
+}
+$('#s-review').addEventListener('input', e => { if(e.target.id === 'rvNote' && RV.w){ RV.w.note = e.target.value; save(); } });
+$('#s-review').addEventListener('click', e => {
+  const c = course(), t = e.target, w = RV.w, by = k => { const b = t.closest(`[data-${k}]`); return b && b.dataset[k]; };
+  if(t.closest('.marks') && by('k')){
+    const k = by('k'), v = +by('v'); if(w.marks[k] === v) delete w.marks[k]; else w.marks[k] = v;
+    if(w.done) Object.assign(w, {by:ME, gat:Date.now()});
+    save(true); paintMarks(); paintCnt();
+  }
+  else if(t.closest('#rvZero')){ critOf(qOf(c, w)).forEach(k => w.marks[k.id] = 0); save(true); paintMarks(); paintCnt(); }
+  else if(t.closest('#rvDone')){ const nx = rvNext(c, w); Object.assign(w, {done:true, by:ME, gat:Date.now(), note:$('#rvNote').value}); save(true); go('review', nx && nx.w.id); }
+  else if(t.closest('#rpBtn')) rpToggle();
+  else if(t.closest('#rpTrk')){ const r = $('#rpTrk').getBoundingClientRect(); rpToggle(Math.min(1, Math.max(0, (e.clientX - r.left) / r.width))); }
+  else if(t.closest('#rvDemo')){ demoWorks(c); save(true); paintReview(); paintCnt(); }
+  else if(by('st')){ RF.st = by('st'); paintReview(); }
+  else if(by('q')){ RF.q = by('q'); paintReview(); }
+  else if(by('w')) go('review', by('w'));
+});
+
+/* ---------- результаты: автопроверка и оценки экспертов в одной таблице ---------- */
+const RS = {sort:'code', f:'all', view:'tasks'};
+function hrnd(seed){
+  let x = 0; for(const ch of seed) x = (x * 31 + ch.charCodeAt(0)) | 0;
+  return () => { x = x + 0x6D2B79F5 | 0; let t = Math.imul(x ^ x >>> 15, 1 | x); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+}
+/* Балл автопроверки. В макете это детерминированный пример (подсчёта ответов в макете нет); в продукте балл приходит из Moodle. st: f — полный, p — частичный, z — ноль, s — без ответа */
+function autoRes(t, q){
+  const r = hrnd(t.id + q.id), p = .45 + .5 * hrnd(t.id + 'lvl')(), max = maxPts(q), o = {q, max, pts:0, st:'s'};
+  if(r() > .94) return o;
+  if(byStep(q) && q.a){ const P = q.a.map(optPt), best = Math.max(...P); let sum = 0;
+    if(q.type === 'single') sum = r() < p ? best : P[Math.floor(r() * P.length)];
+    else P.forEach(v => { if(r() < (v > 0 ? p : (1 - p) / 2)) sum += v; });
+    o.pts = Math.max(0, r2(sum)); }
+  else if(byStep(q)){ const S = stepsOf(q); let sum = 0, ok = 0; S.forEach(x => { if(r() < p){ sum += x.pt ?? 1; ok++; } });
+    Object.assign(o, {ok, n:S.length, pts:Math.max(0, r2(sum - (S.length - ok) * (q.score.pen || 0)))}); }
+  else o.pts = r() < p ? max : 0;
+  o.st = max && o.pts >= max ? 'f' : o.pts > 0 ? 'p' : 'z';
+  return o;
+}
+const lvl = (v, max) => max && v >= max ? 'f' : v > 0 ? 'p' : 'z';
+function resRows(c){
+  const W = liveWorks(c);
+  const rows = c.tickets.filter(t => t.st === 'in' || W.some(w => w.tid === t.id)).map(t => {
+    const cells = c.qs.map(q => { if(!MANUAL(q.type)) return autoRes(t, q);
+      const w = W.find(x => x.tid === t.id && x.qid === q.id); return w ? {man:1, q, w, max:critMax(q), st:wState(w, q), sum:wSum(w, q)} : {man:1, q, max:critMax(q), st:'none'}; });
+    const man = cells.filter(x => x.man && x.w), done = man.filter(x => x.st === 'done');
+    const auto = r2(cells.reduce((s, x) => s + (x.man ? 0 : x.pts), 0)), exp = r2(done.reduce((s, x) => s + x.sum, 0));
+    return {t, cells, n:man.length, done:done.length, auto, exp, total:r2(auto + exp)};
+  });
+  [...rows].sort((a, b) => b.total - a.total).forEach((r, i, a) => r.place = i && a[i - 1].total === r.total ? a[i - 1].place : i + 1);
+  return rows;
+}
+const cellTxt = x => x.man ? ({none:'·', new:'—', part:'…', redo:'!'}[x.st] || num(x.sum)) : x.st === 's' ? '∅' : num(x.pts);
+const cellBtn = (x, r) => x.man ? (x.w ? `<button class="sc-b ${x.st === 'done' ? lvl(x.sum, x.max) : x.st}" data-cell="${x.w.id}" title="${WST[x.st][0]}">${cellTxt(x)}</button>` : '<span class="muted">·</span>')
+  : `<button class="sc-b ${x.st}" data-auto="${r.t.id}|${x.q.id}">${cellTxt(x)}</button>`;
+const pct = (v, max) => max ? Math.round(v / max * 100) : 0;
+function paintResults(){
+  const c = course(), qs = c.qs, rows = resRows(c), crit = RS.view === 'crit', tasks = RS.view !== 'sum';
+  const maxA = r2(qs.filter(q => !MANUAL(q.type)).reduce((s, q) => s + maxPts(q), 0)), maxE = r2(manualQs(c).reduce((s, q) => s + critMax(q), 0)), max = r2(maxA + maxE);
+  const nW = rows.reduce((s, r) => s + r.n, 0), nD = rows.reduce((s, r) => s + r.done, 0), full = rows.filter(r => r.done === r.n).length;
+  const mean = f => rows.length ? r2(rows.reduce((s, r) => s + f(r), 0) / rows.length) : 0;
+  const list = rows.filter(r => RS.f === 'all' || (RS.f === 'full') === (r.done === r.n)).sort((a, b) => (RS.sort === 'sum' ? b.total - a.total : RS.sort === 'name' ? (a.t.name || '').localeCompare(b.t.name || '', 'ru') : 0) || a.t.login.localeCompare(b.t.login));
+  /* столбцы заданий: в режиме «С критериями» у задания с ручной проверкой отдельный столбец на каждый критерий */
+  const cols = !tasks ? [] : qs.flatMap((q, qi) => { const man = MANUAL(q.type), base = {q, qi, man, max:maxPts(q)};
+    return man && crit ? [...critOf(q).map((k, j) => ({...base, k, j, max:k.max})), {...base, total:1}] : [base]; });
+  const colVal = (col, r) => { const x = r.cells[col.qi]; return !col.man ? x.pts : x.st !== 'done' ? null : col.k ? x.w.marks[col.k.id] : x.sum; };
+  const foot = cols.map(col => { const v = rows.map(r => colVal(col, r)).filter(x => x != null); return v.length ? r2(v.reduce((s, x) => s + x, 0) / v.length) : null; });
+  $('#s-results').innerHTML = `<div class="head"><div><div class="eyebrow">${h(c.title)} · ${h(c.sub)}</div><h1>Результаты</h1>
+      <p>Все задания курса в одной таблице: баллы автоматической проверки и оценки экспертов по критериям. В итог входят автопроверка и завершённые проверки экспертов.</p></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-line" data-go="review">К проверке работ</button><button class="btn btn-line" id="resCsv" ${rows.length ? '' : 'disabled'}>Скачать CSV</button></div></div>
+    ${!rows.length ? `<div class="empty"><b>Результатов пока нет</b>Строка участника появится, когда он войдёт и сдаст тест.</div>` : `
+    <div class="stats"><div class="stat"><b>${rows.length}</b><span>участников сдали тест</span></div>
+      <div class="stat"><b>${num(mean(r => r.total))} <span>из ${num(max)}</span></b><span>средний итог · ${pct(mean(r => r.total), max)}%</span></div>
+      <div class="stat"><b>${num(mean(r => r.auto))} <span>из ${num(maxA)}</span></b><span>средний балл автопроверки</span></div>
+      <div class="stat"><b>${nD} из ${nW}</b><span>работ проверено экспертом</span><div class="pbar"><i style="width:${nW ? nD / nW * 100 : 0}%"></i></div></div>
+      <div class="stat"><b>${full} из ${rows.length}</b><span>участников с окончательным итогом</span><div class="pbar"><i style="width:${full / rows.length * 100}%"></i></div></div></div>
+    <div class="tools"><div class="seg" role="group" aria-label="Подробность">${[['sum', 'Сводно'], ['tasks', 'По заданиям'], ['crit', 'С критериями']].map(([k, n]) => `<button data-view="${k}" aria-pressed="${RS.view === k}">${n}</button>`).join('')}</div>
+      <div class="filters">${[['all', 'Все участники'], ['full', 'Итог окончательный'], ['wait', 'Ждут эксперта']].map(([k, n]) => `<button class="chip" aria-pressed="${RS.f === k}" data-f="${k}">${n}</button>`).join('')}</div>
+      <div class="seg" role="group" aria-label="Сортировка" style="margin-left:auto">${[['code', 'По коду'], ['name', 'По имени'], ['sum', 'По итогу']].map(([k, n]) => `<button data-sort="${k}" aria-pressed="${RS.sort === k}">${n}</button>`).join('')}</div></div>
+    <div class="rscroll"><table class="rt"><thead><tr><th class="who">Участник</th>
+      ${cols.map(col => `<th class="${col.man ? 'man' : ''}" title="${h(col.k ? col.k.name : promptOf(col.q) || TYPES[col.q.type].n)}${col.k ? '' : ' · ' + TYPES[col.q.type].n}">${col.k ? `${col.qi + 1}·К${col.j + 1}` : col.total ? `${col.qi + 1} Σ` : col.qi + 1}<small>${col.man && !col.k ? 'эксп. · ' : ''}${num(col.max)}</small></th>`).join('')}
+      <th class="sum">Авто<small>из ${num(maxA)}</small></th><th>Эксперт<small>из ${num(maxE)}</small></th><th class="sum">Итого<small>из ${num(max)}</small></th><th>%</th><th>Место</th><th>Проверка</th></tr></thead><tbody>
+      ${list.map(r => `<tr><td class="who">${h(r.t.name) || 'Без имени'}<div class="mono">${h(r.t.login)}</div></td>
+        ${cols.map(col => { const x = r.cells[col.qi]; return `<td class="${col.man ? 'man' : ''}">${col.k ? (x.w && hasMark(x.w, col.k) ? num(x.w.marks[col.k.id]) : '<span class="muted">—</span>') : cellBtn(x, r)}</td>`; }).join('')}
+        <td class="sum">${num(r.auto)}</td><td>${r.n ? (r.done ? num(r.exp) : '—') : '<span class="muted">·</span>'}</td><td class="sum">${num(r.total)}${r.done < r.n ? '<span class="muted" title="Итог неокончательный: не все работы проверены">*</span>' : ''}</td><td>${pct(r.total, max)}</td><td>${r.place}</td>
+        <td><span class="pill ${r.done === r.n ? 'ok' : r.done ? 'draft' : ''}">${r.done === r.n ? 'Завершена' : `${r.done} из ${r.n}`}</span></td></tr>`).join('')
+        || `<tr><td class="who muted">Нет участников</td><td colspan="${cols.length + 6}"></td></tr>`}
+      </tbody><tfoot><tr><td class="who">Средний балл</td>${foot.map((v, i) => `<td class="${cols[i].man ? 'man' : ''}">${v == null ? '—' : num(v)}</td>`).join('')}<td class="sum">${num(mean(r => r.auto))}</td><td>${num(mean(r => r.exp))}</td><td class="sum">${num(mean(r => r.total))}</td><td>${pct(mean(r => r.total), max)}</td><td></td><td></td></tr>
+        <tr><td class="who">Решаемость, %</td>${foot.map((v, i) => `<td class="${cols[i].man ? 'man' : ''}">${v == null ? '—' : pct(v, cols[i].max)}</td>`).join('')}<td class="sum">${pct(mean(r => r.auto), maxA)}</td><td>${pct(mean(r => r.exp), maxE)}</td><td class="sum">${pct(mean(r => r.total), max)}</td><td></td><td></td><td></td></tr></tfoot></table></div>
+    <div class="lg" style="margin-top:12px"><span><span class="sc-b f">1</span>полный балл</span><span><span class="sc-b p">0,5</span>частичный</span><span><span class="sc-b z">0</span>ноль</span><span><span class="sc-b s">∅</span>нет ответа</span>
+      <span><span class="sc-b new">—</span>ждёт эксперта</span><span><span class="sc-b part">…</span>проверка начата</span><span><span class="sc-b redo">!</span>перепроверить</span><span>* итог неокончательный</span></div>
+    <p class="note" style="margin-top:8px">В шапке номер задания и максимум балла, название видно при наведении. Столбцы с пометкой «эксп.» оценивает эксперт, нажатие на балл открывает подробности. Место считается по текущему итогу. Баллы автопроверки в макете условные: подсчёт выполняет Moodle.</p>
+    <div class="card" style="margin-top:20px"><h3>Средний балл по критериям</h3>
+      ${manualQs(c).map(q => { const done = liveWorks(c).filter(w => w.qid === q.id && wState(w, q) === 'done');
+        return `<div><b>№ ${qNo(c, q)} · ${h(promptOf(q)) || TYPES[q.type].n}</b> <span class="hint">проверено работ: ${done.length}</span></div>
+          ${critOf(q).map((k, j) => { const a = done.length ? r2(done.reduce((s, w) => s + w.marks[k.id], 0) / done.length) : null;
+            return `<div class="cavg"><span>К${j + 1}. ${h(k.name) || 'Критерий без названия'}</span><div class="pbar"><i style="width:${a == null || !k.max ? 0 : a / k.max * 100}%"></i></div><span>${a == null ? '—' : num(a)} из ${num(k.max)}</span></div>`; }).join('')}`; }).join('') || '<p class="note">В курсе нет заданий с ручной проверкой.</p>'}</div>`}`;
+}
+$('#s-results').addEventListener('click', e => {
+  const c = course(), t = e.target, by = k => { const b = t.closest(`[data-${k}]`); return b && b.dataset[k]; };
+  if(by('f')){ RS.f = by('f'); paintResults(); }
+  else if(by('sort')){ RS.sort = by('sort'); paintResults(); }
+  else if(by('view')){ RS.view = by('view'); paintResults(); }
+  else if(by('auto')){
+    const [tid, qid] = by('auto').split('|'), k = c.tickets.find(x => x.id === tid), q = c.qs.find(x => x.id === qid), x = autoRes(k, q);
+    modal(`<div class="eyebrow">${h(k.login)}${k.name ? ' · ' + h(k.name) : ''}</div><h3>Задание ${qNo(c, q)}: ${num(x.pts)} из ${num(x.max)} б.</h3>
+      <div><span class="pill type">${TYPES[q.type].n}</span> <span class="pill ${x.st === 'f' ? 'ok' : x.st === 'p' ? 'draft' : x.st === 'z' ? 'bad' : ''}">${{f:'Верно', p:'Частично верно', z:'Неверно', s:'Нет ответа'}[x.st]}</span></div>
+      <p>${h(promptOf(q)) || 'Без формулировки'}</p>
+      <dl class="dl"><dt>Проверка</dt><dd>автоматическая</dd><dt>Начисление</dt><dd>${byStep(q) ? (q.a ? 'свой балл у каждого варианта' : 'по шагам') : 'всё или ничего'}</dd>
+        ${x.n && x.st !== 's' ? `<dt>Верных шагов</dt><dd>${x.ok} из ${x.n}</dd>${q.score.pen ? `<dt>Штраф за ошибки</dt><dd>−${num(r2((x.n - x.ok) * q.score.pen))}</dd>` : ''}` : ''}</dl>
+      <p class="note">Сам ответ участника хранится в Moodle; в макете балл условный.</p>
+      <div class="row"><button class="btn btn-line" data-act="edit">Открыть задание</button><button class="btn btn-primary" data-act="no">Закрыть</button></div>`, a => { if(a === 'edit') go('edit', q.id); });
+  }
+  else if(by('cell')){
+    const w = works(c).find(x => x.id === by('cell')), q = qOf(c, w), k = tkOf(c, w), st = wState(w, q);
+    modal(`<div class="eyebrow">${h(k.login)}${k.name ? ' · ' + h(k.name) : ''}</div><h3>Задание ${qNo(c, q)}: ${st === 'new' ? 'ждёт проверки' : `${num(wSum(w, q))} из ${num(critMax(q))} б.`}</h3>
+      <div><span class="pill type">${TYPES[q.type].n}</span> <span class="pill ${WST[st][1]}">${WST[st][0]}</span></div>
+      <dl class="dl">${critOf(q).map(cr => `<dt>${h(cr.name) || 'Критерий без названия'}</dt><dd>${hasMark(w, cr) ? num(w.marks[cr.id]) : '—'} / ${num(cr.max)}</dd>`).join('')}</dl>
+      ${w.note ? `<p class="hint"><b>Комментарий:</b> ${h(w.note)}</p>` : ''}${w.done ? `<p class="note">Проверено: ${h(w.by)}, ${fmtD(w.gat)}.</p>` : ''}
+      <div class="row"><button class="btn btn-line" data-act="no">Закрыть</button><button class="btn btn-primary" data-act="open">${st === 'done' ? 'Открыть работу' : 'Проверить'}</button></div>`, a => { if(a === 'open') go('review', w.id); });
+  }
+  else if(t.closest('#resCsv')){
+    const qs = c.qs, cell = v => /[",;\n]/.test(v = String(v ?? '')) ? `"${v.replace(/"/g, '""')}"` : v, no = q => `№${qNo(c, q)}`;
+    const head = ['Код', 'Участник', ...qs.flatMap(q => MANUAL(q.type) ? [...critOf(q).map(k => `${no(q)} эксперт: ${k.name}`), `${no(q)} эксперт: итог`] : [`${no(q)} авто (${num(maxPts(q))})`]), 'Авто', 'Эксперт', 'Итого', '%', 'Место', 'Проверено работ'];
+    const max = r2(qs.reduce((s, q) => s + maxPts(q), 0));
+    const body = resRows(c).map(r => [r.t.login, r.t.name, ...r.cells.flatMap(x => !x.man ? [x.st === 's' ? '' : num(x.pts)] : x.st === 'done' ? [...critOf(x.q).map(k => num(x.w.marks[k.id])), num(x.sum)] : [...critOf(x.q).map(() => ''), '']),
+      num(r.auto), num(r.exp), num(r.total), pct(r.total, max), r.place, `${r.done} из ${r.n}`]);
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob(['﻿' + [head, ...body].map(r => r.map(cell).join(';')).join('\n')], {type:'text/csv'}));
+    a.download = `results-${c.id}.csv`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+});
+
+/* критерии в редакторе задания */
+function critEd(q){
+  const cr = critOf(q), graded = works(course()).filter(w => w.qid === q.id && w.done).length;
+  return `<p class="note">Задание проверяет эксперт. Он ставит балл по каждому критерию отдельно, от 0 до максимума критерия. Балл за задание равен сумме максимумов.</p>
+    <div class="rows">${cr.map((k, i) => `<div class="crit"><div class="rw"><span class="num">${i + 1}</span><input class="in" data-p="crit.${i}.name" value="${h(k.name)}" placeholder="Критерий, например «Грамматика»" aria-label="Название критерия">
+        <input class="in pt" type="number" min="0.5" step="0.5" data-p="crit.${i}.max" data-num value="${k.max}" title="Максимум баллов по критерию" aria-label="Максимум баллов по критерию">${delBtn('crit', i, 1, cr.length)}</div>
+      <textarea class="in" rows="2" data-p="crit.${i}.desc" placeholder="За что ставить баллы: 2 — …, 1 — …, 0 — …" aria-label="Описание критерия">${h(k.desc)}</textarea></div>`).join('')}</div>
+    ${addBtn('crit', 'crit', 'Критерий')}
+    <div class="field"><span class="lab">Шаг оценки</span><div class="seg" style="max-width:260px">${[[1, '1 балл'], [.5, '0,5 балла']].map(([v, n]) => `<button type="button" data-act="cstep" data-v="${v}" aria-pressed="${(q.cstep === .5 ? .5 : 1) === v}">${n}</button>`).join('')}</div></div>
+    <p class="note" id="critSum"></p>
+    ${graded ? `<div class="issues">По этому заданию уже проверено работ: ${graded}. Если добавить критерий или уменьшить максимум, такие работы придётся перепроверить.</div>` : ''}`;
+}
+
 /* ---------- замечания к заданию ---------- */
 function issues(q){
   const out = [], empty = it => !it.t && !it.img && !it.au;
   if(q.type.startsWith('hz-')) return out;
-  if(!q.prompt.trim()) out.push('Нет формулировки задания.');
+  if(!plain(q.prompt).trim()) out.push('Нет формулировки задания.');
   if(q.a){
     if(q.a.length < 2) out.push('Нужно минимум два варианта ответа.');
     if(q.a.some(empty)) out.push('Есть пустой вариант ответа.');
@@ -638,6 +1028,7 @@ function issues(q){
     if((q.cfg.pm || 'snap') !== 'snap' && (!q.zones.length || q.items.some(it => !(it.zn < q.zones.length)))) out.push('Не для всех элементов задана зона.');
   }
   if(q.type === 'gap' && !parseGap(q).answers.length) out.push('В тексте нет пропусков: выделите слово и нажмите «Сделать пропуском».');
+  if(MANUAL(q.type)){ const cr = critOf(q); if(!cr.length) out.push('Добавьте хотя бы один критерий проверки.'); if(cr.some(k => !k.name.trim())) out.push('У критерия нет названия.'); if(cr.some(k => !(k.max > 0))) out.push('Максимум баллов по критерию должен быть больше 0.'); }
   return out;
 }
 
@@ -650,7 +1041,7 @@ function shuf(arr, seed){
   if(a.length > 1 && a.every((v, i) => v === i)) a.push(a.shift());
   return a.map(i => arr[i]);
 }
-const sI = it => I(it.t && h(it.t), it.s && h(it.s), it.img);
+const sI = it => I(wrapAl(clean(it.t), it.al), it.s && h(it.s), it.img);
 const sceneOf = q => typeof q.scene === 'string' ? {html:ASSETS.scenes[q.scene], ratio:600/380} : {html:`<img class="pscene" src="${q.scene.src}" alt="" draggable="false">`, ratio:q.scene.ratio};
 function parseGap(q){
   const answers = [];
@@ -658,9 +1049,9 @@ function parseGap(q){
   return {lines, answers};
 }
 function toStudent(q){
-  const cfg = {...q.cfg, type:q.type}, o = {type:q.type, prompt:h(q.prompt), cfg};
+  const cfg = {...q.cfg, type:q.type}, o = {type:q.type, prompt:rich(q, 'prompt'), cfg};
   if(q.type.startsWith('hz-')) return {type:q.type, hzRef:q.hzRef, cfg};
-  if(q.zh) Object.assign(o, {zh:h(q.zh), py:h(q.py)});
+  if(clean(q.zh)) Object.assign(o, {zh:rich(q, 'zh'), py:h(q.py)});
   if(q.qa) o.qa = {dur:q.qa.dur};
   if(q.hint) o.hint = h(q.hint);
   if(q.a){ o.cols = cfg.cols || 2; if(q.qImg) o.qImg = q.qImg; o.a = q.a.map(a => Object.assign(sI(a), a.au ? {au:a.au.dur} : {})); }
@@ -727,14 +1118,92 @@ const getP = (o, p) => p.split('.').reduce((a, k) => a == null ? a : a[k], o);
 function setP(o, p, v){ const ks = p.split('.'), last = ks.pop(), t = ks.reduce((a, k) => a[k] ?? (a[k] = {}), o); if(v == null) delete t[last]; else t[last] = v; }
 const fmtT = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
 const imgBtn = (p, v, cls = '') => `<button type="button" class="it-img ${v ? 'on' : ''} ${cls}" data-act="img" data-p="${p}" title="${v ? 'Заменить картинку' : 'Добавить картинку'}" aria-label="Картинка">${thumb(v)}</button>`;
-const itemEd = (p, it, ph = 'Текст') => `<div class="it">${imgBtn(p + '.img', it.img)}<input class="in zh" data-p="${p}.t" value="${h(it.t)}" placeholder="${ph}" aria-label="${ph}"><input class="in" data-p="${p}.s" value="${h(it.s)}" placeholder="Подпись, пиньинь" aria-label="Подпись"></div>`;
+const itemEd = (p, it, ph = 'Текст') => `<div class="it">${imgBtn(p + '.img', it.img)}<div class="rte-ed mini in zh" contenteditable="true" role="textbox" aria-label="${ph}" data-rp="${p}.t" data-ph="${ph}" style="text-align:${it.al || 'left'}">${clean(it.t)}</div><input class="in" data-p="${p}.s" value="${h(it.s)}" placeholder="Подпись, пиньинь" aria-label="Подпись"></div>`;
 const audEd = (p, v) => v ? `<span class="aud on"><span>♪ ${h(v.name)} · ${fmtT(v.dur)}</span><button type="button" class="x" style="width:22px;height:22px;border:0;background:transparent" data-act="audDel" data-p="${p}" aria-label="Убрать звук">✕</button></span>`
   : `<button type="button" class="aud" data-act="aud" data-p="${p}">♪ Звук</button>`;
 const delBtn = (list, i, min = 0, n = 99) => `<button type="button" class="x" data-act="del" data-p="${list}" data-i="${i}" ${n <= min ? 'disabled' : ''} aria-label="Удалить" title="Удалить">✕</button>`;
 const addBtn = (list, kind, label) => `<div><button type="button" class="btn btn-line sm" data-act="add" data-p="${list}" data-kind="${kind}">+ ${label}</button></div>`;
+/* оценка по шагам: свой балл за каждый верный шаг и штраф за ошибку (для заданий с несколькими ответами) */
+const STEPPED = t => ['single','multiple','match','order','place','gap'].includes(t);
+const optPt = a => a.pt ?? (a.ok ? 1 : 0);   /* выбор ответа: свой балл у каждого варианта, у неверных может быть отрицательным */
+const byStep = q => STEPPED(q.type) && !!q.score && q.score.mode === 'steps';
+const adjOrd = q => q.type === 'order' && byStep(q) && q.score.ord === 'adj';   /* порядок: шаг — пара соседних элементов, балл пары лежит в pp у первого из них */
+const stepsOf = q => adjOrd(q) ? q.items.slice(0, -1).map(it => ({pt:it.pp})) : q.a ? q.a.filter(a => optPt(a) > 0) : q.type === 'match' ? q.pairs : q.type === 'gap' ? parseGap(q).answers.map((_, i) => q.gaps[i] || {}) : q.items;
+const r2 = v => Math.round(v * 100) / 100;
+const maxPts = q => MANUAL(q.type) ? critMax(q) : byStep(q) && q.type === 'single' ? Math.max(0, ...q.a.map(optPt)) : byStep(q) ? r2(stepsOf(q).reduce((s, x) => s + (x.pt ?? 1), 0)) : q.points;
+const ptIn = (q, p, it, off, key = 'pt', tip = 'Баллы за этот шаг', def = 1, neg = false) => byStep(q) ? `<input class="in pt" type="number" ${neg ? '' : 'min="0"'} step="0.5" data-p="${p}.${key}" data-num value="${off && key === 'pp' ? '' : it[key] ?? def}" ${off ? 'disabled' : ''} title="${tip}" aria-label="${tip}">` : '';
+const STEP_NOTE = {
+  multiple:'Балл начисляется за каждый выбранный верный вариант, штраф снимается за каждый выбранный неверный.',
+  match:'Балл начисляется за каждую верную пару, штраф снимается за каждую неверную.',
+  order:'Балл начисляется за каждый элемент на своём месте, штраф снимается за каждый элемент не на своём месте.',
+  place:'Балл начисляется за каждый элемент на своём месте, штраф снимается за каждый элемент не на своём.',
+  gap:'Балл начисляется за каждый верно заполненный пропуск, штраф снимается за каждый неверно заполненный.'};
+function scoreEd(q){
+  if(!STEPPED(q.type)) return '';
+  const on = byStep(q);
+  return `<div class="field"><span class="lab">Как начислять баллы</span><div class="seg">${[['all','Всё или ничего'],['steps', q.a ? 'Свой балл у каждого варианта' : 'По шагам']].map(([v, n]) => `<button type="button" data-act="score" data-v="${v}" aria-pressed="${on === (v === 'steps')}">${n}</button>`).join('')}</div></div>
+    ${!on ? '' : q.a ? `<p class="note" id="scoreSum"></p><p class="note">Балл задаётся в поле справа от каждого варианта, в том числе неверного. ${q.type === 'single' ? 'Участник получает балл выбранного варианта: так можно дать часть баллов за почти верный ответ или снять баллы за грубую ошибку.' : 'Баллы выбранных вариантов складываются, у неверных вариантов можно поставить отрицательный балл.'} Итог за задание не опускается ниже 0.</p>`
+      : `<div class="grid2" style="grid-template-columns:minmax(0,220px) minmax(0,1fr);align-items:end">${fld('Снимать за каждую ошибку, баллов', `<input class="in" id="edPen" type="number" min="0" step="0.5" data-p="score.pen" data-num value="${q.score.pen || 0}">`, 'edPen')}<p class="note" id="scoreSum"></p></div>
+      ${q.type === 'order' ? `<div class="field"><span class="lab">Что считать шагом</span><div class="seg">${[['pos','Место элемента'],['adj','Соседняя пара']].map(([v, n]) => `<button type="button" data-act="ord" data-v="${v}" aria-pressed="${adjOrd(q) === (v === 'adj')}">${n}</button>`).join('')}</div></div>` : ''}
+      <p class="note">${adjOrd(q) ? 'Балл начисляется за каждую пару соседних элементов, которые стоят подряд в верном порядке. Штраф снимается за каждую пару соседей в ответе, которой нет в верном порядке. Один переставленный элемент не обнуляет остальные.' : STEP_NOTE[q.type]} Балл за шаг задаётся в поле справа от него. Шаг без ответа не штрафуется, итог за задание не опускается ниже 0.</p>`}
+    ${on ? ''
+      : '<p class="note">Баллы ставятся только за полностью верный ответ. В режиме «По шагам» у каждого верного шага свой балл, а за ошибку можно снимать баллы.</p>'}`;
+}
+/* --- редактор текста: хранится очищенный HTML (b, i, u, span с размером и цветом, br); выравнивание — в q.fmt[поле].al --- */
+const RTE_COL = {'#8a4f0e':'var(--gold-ink)', '#a1432c':'var(--red)', '#46806a':'var(--green)', '#436986':'var(--slate)'};
+const RTE_SIZE = {1:'.8em', 2:'.8em', 4:'1.15em', 5:'1.3em', 6:'1.6em', 7:'2em'};
+const toHex = c => { const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(c || ''); return m ? '#' + m.slice(1, 4).map(v => (+v).toString(16).padStart(2, '0')).join('') : String(c || '').toLowerCase(); };
+function plain(html){ const t = document.createElement('template'); t.innerHTML = String(html ?? '').replace(/<br>/g, ' '); return t.content.textContent; }
+function clean(html){
+  const t = document.createElement('template'); t.innerHTML = String(html ?? '');
+  const walk = n => [...n.childNodes].map(c => {
+    if(c.nodeType === 3) return h(c.nodeValue);
+    if(c.nodeType !== 1) return '';
+    const tag = c.tagName, inner = walk(c), st = c.getAttribute('style') || '';
+    if(tag === 'BR') return '<br>';
+    if(tag === 'B' || tag === 'STRONG') return `<b>${inner}</b>`;
+    if(tag === 'I' || tag === 'EM') return `<i>${inner}</i>`;
+    if(tag === 'U') return `<u>${inner}</u>`;
+    if(tag === 'FONT' || tag === 'SPAN'){
+      const size = RTE_SIZE[c.getAttribute('size')] || (/font-size:\s*([\d.]+em)/.exec(st) || [])[1];
+      const col = (/color:\s*(var\(--[\w-]+\))/.exec(st) || [])[1] || RTE_COL[toHex(c.getAttribute('color') || c.style.color)];
+      const out = [size && 'font-size:' + size, col && 'color:' + col].filter(Boolean);
+      return out.length ? `<span style="${out.join(';')}">${inner}</span>` : inner;
+    }
+    if(tag === 'DIV' || tag === 'P') return '<br>' + (inner === '<br>' ? '' : inner);
+    return inner;
+  }).join('');
+  const out = walk(t.content).replace(/^(<br>)+|(<br>)+$/g, '');
+  return plain(out).trim() ? out : '';
+}
+const alOf = (q, f) => (q.fmt && q.fmt[f] && q.fmt[f].al) || 'left';
+const wrapAl = (html, al) => html && al && al !== 'left' ? `<span class="ta" style="display:block;text-align:${al === 'right' ? 'right' : 'center'}">${html}</span>` : html;
+const rich = (q, f) => wrapAl(clean(q[f]), alOf(q, f));
+const rte = (f, q, ph, cls = '') => `<div class="rte" data-f="${f}"><div class="rte-bar" role="toolbar" aria-label="Оформление текста">
+  <button type="button" data-cmd="bold" title="Полужирный"><b>Ж</b></button><button type="button" data-cmd="italic" title="Курсив"><i>К</i></button><button type="button" data-cmd="underline" title="Подчёркнутый"><u>Ч</u></button><span class="sep"></span>
+  ${[[2,'Мелкий','А−'],[3,'Обычный размер','А'],[5,'Крупный','А+'],[6,'Очень крупный','А++']].map(([v, t, l]) => `<button type="button" data-cmd="fontSize" data-val="${v}" title="${t}">${l}</button>`).join('')}<span class="sep"></span>
+  ${[['#000001','Обычный цвет','var(--ink)'],['#8a4f0e','Золотой','var(--gold-ink)'],['#a1432c','Красный','var(--red)'],['#46806a','Зелёный','var(--green)']].map(([v, t, c]) => `<button type="button" class="sw" data-cmd="foreColor" data-val="${v}" title="${t}" aria-label="${t}" style="--sw:${c}"></button>`).join('')}<span class="sep"></span>
+  ${[['left','По левому краю','M3 4h14M3 8h8M3 12h14M3 16h8'],['center','По центру','M3 4h14M6 8h8M3 12h14M6 16h8'],['right','По правому краю','M3 4h14M9 8h8M3 12h14M9 16h8']].map(([v, l, d]) => `<button type="button" class="ic" data-al="${v}" aria-pressed="${alOf(q, f) === v}" title="${l}" aria-label="${l}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="${d}"/></svg></button>`).join('')}<span class="sep"></span>
+  <button type="button" data-cmd="removeFormat" title="Убрать начертание, размер и цвет">Сбросить</button></div>
+  <div class="rte-ed ${cls}" contenteditable="true" role="textbox" aria-multiline="true" aria-label="${ph}" data-rp="${f}" data-ph="${ph}" style="text-align:${alOf(q, f)}">${clean(q[f])}</div></div>`;
+/* у коротких полей (варианты, пары, элементы) панель одна на всех: всплывает над полем, в котором стоит курсор */
+let RTE_CUR = null;
+function rteCmd(b){
+  const box = b.closest('.rte'), ed = box ? $('.rte-ed', box) : RTE_CUR, q = editing; if(!ed) return;
+  const p = ed.dataset.rp, item = p.includes('.') ? getP(q, p.replace(/\.t$/, '')) : null;
+  if(b.dataset.al){
+    if(item) item.al = b.dataset.al; else (q.fmt || (q.fmt = {}))[p] = {al:b.dataset.al};
+    ed.style.textAlign = b.dataset.al; $$('[data-al]', b.parentNode).forEach(x => x.setAttribute('aria-pressed', String(x === b))); changed(false); return;
+  }
+  ed.focus();
+  const sel = getSelection();   /* без выделения команда применяется ко всему тексту */
+  if(sel.isCollapsed || !ed.contains(sel.anchorNode)){ const r = document.createRange(); r.selectNodeContents(ed); sel.removeAllRanges(); sel.addRange(r); }
+  document.execCommand('styleWithCSS', false, false); document.execCommand(b.dataset.cmd, false, b.dataset.val || null);
+  setP(q, p, clean(ed.innerHTML)); changed(false);
+}
 const fld = (label, inner, id) => `<div class="field"><label ${id ? `for="${id}"` : ''}>${label}</label>${inner}</div>`;
 const stemEd = q => `<div class="rw" style="align-items:flex-start">${imgBtn('qImg', q.qImg, 'big')}
-  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><input class="in zh" data-p="zh" value="${h(q.zh)}" placeholder="Текст вопроса на китайском (необязательно)" aria-label="Текст вопроса" style="font-size:18px;min-height:46px">
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">${rte('zh', q, 'Текст вопроса на китайском (необязательно)', 'zh')}
   <input class="in" data-p="py" value="${h(q.py)}" placeholder="Пиньинь" aria-label="Пиньинь"></div></div>`;
 
 function formBody(q){
@@ -742,13 +1211,13 @@ function formBody(q){
   if(t.startsWith('hz-')) return `<section class="card"><h3>Содержимое</h3><p class="hint">${h(promptOf(q))}</p><p class="note">Иероглиф, черты и ключи этого задания задаются в редакторе заданий по иероглифам (animcjk-task-editor). Здесь задание можно посмотреть в окне участника, назначить баллы и состояние.</p></section>`;
   if(q.a) return `<section class="card"><h3>Вопрос</h3>${stemEd(q)}<div class="rw"><span class="note" style="flex:1">Картинка и звук в вопросе необязательны.</span>${audEd('qa', q.qa)}</div></section>
     <section class="card"><h3>Варианты ответа</h3><p class="note">Отметьте ${t === 'single' ? 'верный вариант' : 'все верные варианты'} галочкой слева. Участник правильных ответов не получает.</p>
-      <div class="rows">${q.a.map((a, i) => `<div class="rw"><label class="okc" title="Верный ответ"><input type="checkbox" data-p="a.${i}.ok" data-ok ${a.ok ? 'checked' : ''} aria-label="Вариант ${i + 1} верный"></label>${itemEd('a.' + i, a, 'Вариант ' + (i + 1))}${audEd(`a.${i}.au`, a.au)}${delBtn('a', i, 2, q.a.length)}</div>`).join('')}</div>
+      <div class="rows">${q.a.map((a, i) => `<div class="rw"><label class="okc" title="Верный ответ"><input type="checkbox" data-p="a.${i}.ok" data-ok ${a.ok ? 'checked' : ''} aria-label="Вариант ${i + 1} верный"></label>${itemEd('a.' + i, a, 'Вариант ' + (i + 1))}${audEd(`a.${i}.au`, a.au)}${ptIn(q, 'a.' + i, a, false, 'pt', 'Баллы за выбор этого варианта (можно отрицательные)', a.ok ? 1 : 0, true)}${delBtn('a', i, 2, q.a.length)}</div>`).join('')}</div>
       ${addBtn('a', 'opt', 'Вариант')}</section>`;
   if(t === 'match') return `<section class="card"><h3>Пары</h3><p class="note">Каждая строка — верная пара. В окне участника правая колонка перемешивается.</p>
-      <div class="rows">${q.pairs.map((p, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd(`pairs.${i}.l`, p.l, 'Слева')}<span class="arrow">↔</span>${itemEd(`pairs.${i}.r`, p.r, 'Справа')}${delBtn('pairs', i, 2, q.pairs.length)}</div>`).join('')}</div>
+      <div class="rows">${q.pairs.map((p, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd(`pairs.${i}.l`, p.l, 'Слева')}<span class="arrow">↔</span>${itemEd(`pairs.${i}.r`, p.r, 'Справа')}${ptIn(q, 'pairs.' + i, p)}${delBtn('pairs', i, 2, q.pairs.length)}</div>`).join('')}</div>
       ${addBtn('pairs', 'pair', 'Пара')}</section>`;
   if(t === 'order') return `<section class="card"><h3>Элементы в правильном порядке</h3><p class="note">Запишите элементы так, как они должны стоять. Участник получит их перемешанными.</p>
-      <div class="rows">${q.items.map((it, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd('items.' + i, it, 'Элемент')}
+      <div class="rows">${q.items.map((it, i) => `<div class="rw"><span class="num">${i + 1}</span>${itemEd('items.' + i, it, 'Элемент')}${adjOrd(q) ? ptIn(q, 'items.' + i, it, i === q.items.length - 1, 'pp', i === q.items.length - 1 ? 'У последнего элемента нет следующего' : 'Баллы за пару: этот элемент и следующий') : ptIn(q, 'items.' + i, it)}
         <button type="button" class="x" data-act="mv" data-p="items" data-i="${i}" data-d="-1" ${i ? '' : 'disabled'} aria-label="Выше">↑</button><button type="button" class="x" data-act="mv" data-p="items" data-i="${i}" data-d="1" ${i < q.items.length - 1 ? '' : 'disabled'} aria-label="Ниже">↓</button>${delBtn('items', i, 2, q.items.length)}</div>`).join('')}</div>
       ${addBtn('items', 'item', 'Элемент')}${fld('Подсказка над заданием (перевод или список слов)', `<input class="in zh" data-p="hint" value="${h(q.hint)}" placeholder="Необязательно">`)}</section>`;
   if(t === 'place'){
@@ -760,7 +1229,7 @@ function formBody(q){
       <p class="note">${zone ? 'Тяните белые вершины, чтобы изменить форму зоны. Жёлтая точка на стороне добавляет вершину, двойной щелчок по вершине удаляет её.' : 'Перетащите номер каждого элемента на его место на картинке. Вид мест (точки, зоны, скрытые зоны) выбирается в «Оформлении».'}</p></section>
     <section class="card"><h3>Элементы</h3>
       <div class="rows">${q.items.map((it, i) => `<div class="rw"><span class="num c" style="--c:var(--m${i % 5})">${i + 1}</span>${itemEd('items.' + i, it, 'Элемент')}
-        ${zone ? `<select class="in" style="flex:none;width:112px" data-p="items.${i}.zn" data-num aria-label="Зона элемента">${q.zones.map((_, z) => `<option value="${z}" ${it.zn === z ? 'selected' : ''}>Зона ${z + 1}</option>`).join('')}</select>` : ''}${delBtn('items', i, 1, q.items.length)}</div>`).join('')}</div>
+        ${zone ? `<select class="in" style="flex:none;width:112px" data-p="items.${i}.zn" data-num aria-label="Зона элемента">${q.zones.map((_, z) => `<option value="${z}" ${it.zn === z ? 'selected' : ''}>Зона ${z + 1}</option>`).join('')}</select>` : ''}${ptIn(q, 'items.' + i, it)}${delBtn('items', i, 1, q.items.length)}</div>`).join('')}</div>
       ${addBtn('items', 'place', 'Элемент')}${fld('Заголовок лотка с элементами', `<input class="in" data-p="poolTitle" value="${h(q.poolTitle)}" placeholder="Слова">`)}</section>`;
   }
   if(t === 'gap') return `<section class="card"><h3>Текст с пропусками</h3>
@@ -772,7 +1241,7 @@ function formBody(q){
       <div class="rows">${q.extra.map((it, i) => `<div class="rw">${itemEd('extra.' + i, it, 'Вариант')}${delBtn('extra', i)}</div>`).join('')}</div>${addBtn('extra', 'item', 'Вариант')}</section>`;
   if(t === 'essay') return `<section class="card"><h3>Вопрос</h3>${stemEd(q)}${fld('Слова, которые нужно использовать (через запятую)', `<input class="in zh" data-p="req" value="${h(q.req)}" placeholder="每天, 起床, 上学">`)}</section>`;
   if(t === 'record') return `<section class="card"><h3>Вопрос</h3>
-      <input class="in zh" data-p="zh" value="${h(q.zh)}" placeholder="Текст для чтения вслух (необязательно)" aria-label="Текст" style="font-size:18px;min-height:46px">
+      ${rte('zh', q, 'Текст для чтения вслух (необязательно)', 'zh')}
       <input class="in" data-p="py" value="${h(q.py)}" placeholder="Пиньинь" aria-label="Пиньинь"><input class="in" data-p="hint" value="${h(q.hint)}" placeholder="Перевод (необязательно)" aria-label="Перевод">
       <div class="rw"><span class="note" style="flex:1">Вопрос можно задать записью: участник слушает и отвечает устно.</span>${audEd('qa', q.qa)}</div></section>`;
   return '';
@@ -783,7 +1252,7 @@ function gapList(q){
   return g.answers.length ? g.answers.map((a, i) => { const G = q.gaps[i];
     return `<div class="rw"><span class="num">${i + 1}</span><span class="tag" title="${h(a)}">${h(a) || '—'}</span>${bank
       ? `${imgBtn(`gaps.${i}.img`, G.img)}<input class="in" data-p="gaps.${i}.s" value="${h(G.s)}" placeholder="Подпись на плашке, пиньинь" aria-label="Подпись">`
-      : `<input class="in zh" data-p="gaps.${i}.alts" value="${h(G.alts)}" placeholder="Также засчитывать (через запятую)" aria-label="Другие верные ответы"><input class="in" data-p="gaps.${i}.hint" value="${h(G.hint)}" placeholder="Подсказка под пропуском" aria-label="Подсказка">`}</div>`; }).join('')
+      : `<input class="in zh" data-p="gaps.${i}.alts" value="${h(G.alts)}" placeholder="Также засчитывать (через запятую)" aria-label="Другие верные ответы"><input class="in" data-p="gaps.${i}.hint" value="${h(G.hint)}" placeholder="Подсказка под пропуском" aria-label="Подсказка">`}${ptIn(q, 'gaps.' + i, G)}</div>`; }).join('')
     : '<p class="note">Пропусков пока нет.</p>';
 }
 function scOverlay(q){
@@ -794,16 +1263,17 @@ function scOverlay(q){
       + z.map((v, j) => `<span class="sc-v" data-z="${i}" data-v="${j}" style="left:${v[0]}%;top:${v[1]}%"></span>`).join('') + `<span class="sc-n" style="left:${cx}%;top:${cy}%">${i + 1}</span>`; }).join('');
 }
 function renderForm(){
+  rteFloat.hidden = true;
   const q = editing, hz = q.type.startsWith('hz-'), left = $('.ed-left'), top = left.scrollTop;
   const typeSel = hz ? `<input class="in" value="${TYPES[q.type].n}" disabled>` : `<select class="in" id="edType">${['single','multiple','match','order','place','gap','essay','record'].map(k => `<option value="${k}" ${k === q.type ? 'selected' : ''}>${TYPES[k].n}</option>`).join('')}</select>`;
   $('#edForm').innerHTML = `<div id="edIssues"></div>
-    <section class="card"><h3>Задание</h3><div class="grid2">${fld('Тип', typeSel, 'edType')}${fld('Баллы', `<input class="in" type="number" min="0" max="100" step="1" data-p="points" data-num value="${q.points}">`)}</div>
-      ${hz ? '' : fld('Формулировка для участника', `<textarea class="in" data-p="prompt" rows="2" placeholder="Например: Выберите правильный перевод слова">${h(q.prompt)}</textarea>`)}</section>
-    ${formBody(q)}
-    <section class="card"><h3>Оформление</h3><p class="note">Эти настройки приходят из окна участника: здесь те же варианты, что оно умеет показывать.</p><div class="tune-host" id="edTune">${PVS.tune || '<p class="note">Загрузка…</p>'}</div></section>
+    <section class="card"><h3>Задание</h3><div class="grid2">${fld('Тип', typeSel, 'edType')}${fld(MANUAL(q.type) ? 'Баллы (сумма критериев)' : byStep(q) ? 'Баллы (сумма шагов)' : 'Баллы', `<input class="in" id="edPts" type="number" min="0" max="100" step="1" data-p="points" data-num value="${maxPts(q)}" ${byStep(q) || MANUAL(q.type) ? 'disabled' : ''}>`, 'edPts')}</div>
+      ${hz ? '' : `<div class="field"><span class="lab">Формулировка для участника</span>${rte('prompt', q, 'Например: Выберите правильный перевод слова')}</div>`}</section>
     <section class="card"><h3>Проверка</h3>${MANUAL(q.type)
-      ? fld('Критерии для эксперта', `<textarea class="in" data-p="criteria" rows="3" placeholder="За что и сколько баллов ставить">${h(q.criteria)}</textarea>`) + '<p class="note">Ответ проверяет эксперт вручную и ставит от 0 до максимума баллов.</p>'
-      : `<p class="note">Проверяется автоматически по правильному ответу, заданному выше. ${q.type === 'gap' ? 'Для ввода текста регистр и пробелы по краям не учитываются.' : ''}</p>`}</section>`;
+      ? critEd(q)
+      : `<p class="note">Проверяется автоматически по правильному ответу, заданному ниже. ${q.type === 'gap' ? 'Для ввода текста регистр и пробелы по краям не учитываются.' : ''}</p>${scoreEd(q)}`}</section>
+    ${formBody(q)}
+    <section class="card"><h3>Оформление</h3><p class="note">Эти настройки приходят из окна участника: здесь те же варианты, что оно умеет показывать.</p><div class="tune-host" id="edTune">${PVS.tune || '<p class="note">Загрузка…</p>'}</div></section>`;
   left.scrollTop = top; paintMeta();
 }
 function paintMeta(){
@@ -813,6 +1283,12 @@ function paintMeta(){
   $$('#edStatus button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === q.status)));
   const is = issues(q), box = $('#edIssues');
   if(box) box.innerHTML = is.length ? `<div class="issues"><ul>${is.map(x => `<li>${x}</li>`).join('')}</ul></div>` : '';
+  if(MANUAL(q.type)){ const pe = $('#edPts'), cs = $('#critSum'); if(pe) pe.value = maxPts(q); if(cs) cs.textContent = `Критериев: ${critOf(q).length}, максимум за задание ${num(maxPts(q))} б.`; }
+  if(byStep(q)){
+    const pe = $('#edPts'), ss = $('#scoreSum'), n = stepsOf(q).length, pen = q.score.pen || 0;
+    if(pe) pe.value = maxPts(q);
+    if(ss) ss.textContent = q.a ? `Максимум ${maxPts(q)} б.${q.a.some(a => optPt(a) < 0) ? ' Есть варианты, за которые баллы снимаются.' : ''}` : `Шагов: ${n}, максимум ${maxPts(q)} б.${pen ? ` Каждая ошибка: −${pen} б.` : ' Ошибки не штрафуются.'}`;
+  }
   const f = $('#pvFit'); f.classList.toggle('bad', !PVS.fits);
   f.textContent = !ASSETS ? 'Загрузка окна участника…' : PVS.fits ? 'Помещается в окно без прокрутки' : 'Не помещается: у участника появится прокрутка';
 }
@@ -826,10 +1302,12 @@ $('#edStatus').addEventListener('click', e => { const b = e.target.closest('butt
 
 const form = $('#edForm');
 form.addEventListener('input', e => {
+  if(e.target.dataset.rp){ setP(editing, e.target.dataset.rp, clean(e.target.innerHTML)); changed(false); return; }
   const el = e.target, q = editing, p = el.dataset.p; if(!p) return;
   if(el.hasAttribute('data-ok')){
     if(q.type === 'single' && el.checked){ q.a.forEach(a => a.ok = false); $$('[data-ok]', form).forEach(x => x.checked = x === el); }
     getP(q, p.replace(/\.ok$/, '')).ok = el.checked;
+    $$('.rw', form).forEach((r, k) => { const c = $('[data-ok]', r), pi = $('.pt', r); if(c && pi && q.a[k].pt == null) pi.value = c.checked ? 1 : 0; });
   } else setP(q, p, el.hasAttribute('data-num') ? +el.value || 0 : el.value);
   if(p === 'text'){ const gl = $('#gapList'); if(gl) gl.innerHTML = gapList(q); }
   changed(false);
@@ -841,7 +1319,25 @@ form.addEventListener('change', e => {
   else { Object.keys(old).forEach(k => { if(!['id','prompt','points','status'].includes(k)) delete old[k]; }); Object.assign(old, n, {id:old.id, prompt:old.prompt, status:old.status, points:MANUAL(n.type) === MANUAL(old.type) ? old.points : n.points}); PVS.tune = ''; }
   changed(true);
 });
-const NEW = {opt:() => A(0, ''), pair:() => ({l:{}, r:{}}), item:() => ({}), place:() => ({x:50, y:50, zn:0})};
+form.addEventListener('mousedown', e => { if(e.target.closest('.rte-bar button')) e.preventDefault(); });   /* выделение в тексте не сбрасывается */
+form.addEventListener('paste', e => { if(!e.target.closest('.rte-ed')) return; e.preventDefault(); document.execCommand('insertText', false, e.clipboardData.getData('text/plain')); });
+form.addEventListener('click', e => { const b = e.target.closest('.rte-bar button'); if(b) rteCmd(b); });
+const rteFloat = (() => { const d = document.createElement('div'); d.innerHTML = rte('_', {}, ''); const bar = $('.rte-bar', d); bar.id = 'rteFloat'; bar.classList.add('float'); bar.hidden = true; document.body.append(bar); return bar; })();
+function rteFloatPlace(){
+  const ed = RTE_CUR; if(!ed || !ed.isConnected || document.activeElement !== ed){ rteFloat.hidden = true; return; }
+  rteFloat.hidden = false;
+  const r = ed.getBoundingClientRect(), w = rteFloat.offsetWidth, hh = rteFloat.offsetHeight;
+  rteFloat.style.left = Math.max(8, Math.min(r.left, innerWidth - w - 8)) + 'px';
+  rteFloat.style.top = (r.top - hh - 6 < 64 ? r.bottom + 6 : r.top - hh - 6) + 'px';
+  const al = ed.style.textAlign || 'left'; $$('[data-al]', rteFloat).forEach(x => x.setAttribute('aria-pressed', String(x.dataset.al === al)));
+}
+form.addEventListener('focusin', e => { if(e.target.matches('.rte-ed.mini')){ RTE_CUR = e.target; rteFloatPlace(); } });
+form.addEventListener('focusout', () => setTimeout(rteFloatPlace, 0));
+$('.ed-left').addEventListener('scroll', rteFloatPlace, {passive:true});
+addEventListener('resize', rteFloatPlace);
+rteFloat.addEventListener('mousedown', e => e.preventDefault());
+rteFloat.addEventListener('click', e => { const b = e.target.closest('button'); if(b) rteCmd(b); });
+const NEW = {opt:() => A(0, ''), pair:() => ({l:{}, r:{}}), item:() => ({}), place:() => ({x:50, y:50, zn:0}), crit:() => C('', 1)};
 form.addEventListener('click', e => {
   const tb = e.target.closest('#edTune button[data-v]');
   if(tb){ if(!tb.disabled){ PVS.pendingForm = true; post({type:'oly:cfg', key:tb.parentNode.dataset.key, v:tb.dataset.v}); } return; }
@@ -854,6 +1350,9 @@ form.addEventListener('click', e => {
   else if(act === 'aud') return pickFile('audio/*', f => { const url = URL.createObjectURL(f), a = new Audio(); const done = dur => { URL.revokeObjectURL(url); setP(q, p, {name:f.name, dur}); changed(true); };
     a.onloadedmetadata = () => done(Math.max(1, Math.round(isFinite(a.duration) ? a.duration : 10))); a.onerror = () => done(10); a.src = url; });
   else if(act === 'audDel') setP(q, p, null);
+  else if(act === 'score') q.score = {...q.score, mode:b.dataset.v, pen:(q.score && q.score.pen) || 0};
+  else if(act === 'ord') q.score.ord = b.dataset.v;
+  else if(act === 'cstep') q.cstep = +b.dataset.v;
   else if(act === 'scene') q.scene = b.dataset.v;
   else if(act === 'sceneUp') return pickFile('image/png,image/jpeg,image/webp', f => readImage(f, (src, ratio) => { q.scene = {src, ratio}; changed(true); }));
   else if(act === 'zAdd'){ const k = q.zones.length * 6 % 30; q.zones.push([[30 + k, 30 + k], [60 + k, 30 + k], [60 + k, 60 + k], [30 + k, 60 + k]]); }
